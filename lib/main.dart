@@ -1,4 +1,7 @@
+import 'package:chatapp/src/core/utils/init_bindings.dart';
+import 'package:chatapp/src/router/app_router.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(const MainApp());
@@ -9,12 +12,13 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      initialBinding:  InitialBindings(),
+      initialRoute: AppRouter.tabScreen,
+      getPages: AppRouter.pages,
     );
   }
 }
