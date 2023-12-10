@@ -19,7 +19,7 @@ class LoginScreen extends GetWidget<AuthController> {
               const SizedBox(height: 8),
               TextFieldCustom(
                   labelText: "Số điện thoại, email hoặc tên người dùng",
-                  controller: controller.username.value),
+                  controller: controller.usernameController.value),
               //const SizedBox(height: 8),
               TextFieldCustom(
                   labelText: "Mật khẩu",
@@ -32,7 +32,7 @@ class LoginScreen extends GetWidget<AuthController> {
                       child: controller.hidePass.value == true
                           ? const Icon(Icons.visibility_off)
                           : const Icon(Icons.visibility)),
-                  controller: controller.password.value),
+                  controller: controller.passwordController.value),
               //const SizedBox(height: 8),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 24,vertical: 8),
@@ -84,10 +84,6 @@ class LoginScreen extends GetWidget<AuthController> {
                         borderRadius: BorderRadius.circular(24)),
                   ),
                   onPressed: () {
-                    controller.username.value.text = "";
-                    controller.password.value.text = "";
-                    controller.rePassword.value.text = "";
-                    controller.fullName.value.text = "";
                     Get.toNamed(AppRouter.registerScreen);
                   },
                   child: const Text("Tạo tài khoản mới"),

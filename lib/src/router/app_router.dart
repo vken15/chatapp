@@ -1,41 +1,52 @@
 
 import 'package:chatapp/src/presentations/auth/bindings/auth_bindings.dart';
 import 'package:chatapp/src/presentations/auth/login_screen.dart';
-import 'package:chatapp/src/presentations/auth/register_screen.dart';
+import 'package:chatapp/src/presentations/register/bindings/register_bindings.dart';
+import 'package:chatapp/src/presentations/register/register_screen.dart';
 import 'package:chatapp/src/presentations/chatbox/bindings/chatbox_binding.dart';
 import 'package:chatapp/src/presentations/chatbox/chatbox_screen.dart';
-import 'package:chatapp/src/presentations/home/bindings/home_bindings.dart';
 import 'package:chatapp/src/presentations/home/home_screen.dart';
+import 'package:chatapp/src/presentations/setting/bindings/darkmode_bindings.dart';
+import 'package:chatapp/src/presentations/setting/bindings/setting_bindings.dart';
+import 'package:chatapp/src/presentations/setting/darkmode_screen.dart';
 import 'package:chatapp/src/presentations/setting/setting_screen.dart';
-import 'package:chatapp/src/presentations/tabs/bindings/tabbar_bindings.dart';
-import 'package:chatapp/src/presentations/tabs/tabbar.dart';
+import 'package:chatapp/src/presentations/splash/bindings/splash_bindings.dart';
+import 'package:chatapp/src/presentations/splash/splash_screen.dart';
+import 'package:chatapp/src/presentations/tab/bindings/tabbar_bindings.dart';
+import 'package:chatapp/src/presentations/tab/tabbar.dart';
 import 'package:get/get.dart';
 
 class AppRouter {
+  static const splashScreen = "/splash";
   static const loginScreen = "/login";
   static const registerScreen = "/register";
   static const homeScreen = "/home";
-  static const settingScreen = "/setting";
   static const tabScreen = "/tab";
   static const chatboxScreen = "/chatbox";
+  static const settingScreen = "/setting";
+  static const darkmodeScreen = "/darkmode";
   static List<GetPage> pages = [
+    GetPage(name: splashScreen, page: () => const SplashScreen(), bindings: [
+      SplashBindings(),
+    ]),
     GetPage(name: loginScreen, page: () => const LoginScreen(), bindings: [
       AuthBindings(),
     ]),
     GetPage(name: registerScreen, page: () => const RegisterScreen(), bindings: [
-      AuthBindings(),
+      RegisterBindings(),
     ]),
-    GetPage(name: homeScreen, page: () => const HomeScreen(), bindings: [
-      HomeBindings(),
-    ]),
-    GetPage(name: settingScreen, page: () => const SettingScreen(), bindings: [
-
-    ]),
+    GetPage(name: homeScreen, page: () => const HomeScreen()),
     GetPage(name: tabScreen, page: () => const AppTabBar(), bindings: [
       TabBarBindings(),
     ]),
     GetPage(name: chatboxScreen, page: () => const ChatBoxScreen(), bindings: [
       ChatBoxBindings(),
+    ]),
+    GetPage(name: settingScreen, page: () => const SettingScreen(), bindings: [
+      SettingBindings(),
+    ]),
+    GetPage(name: darkmodeScreen, page: () => const DarkModeSettingScreen(), bindings: [
+      DarkModeSettingBindings(),
     ]),
   ];
 }

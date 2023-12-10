@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TextFieldCustom extends StatelessWidget {
-  TextFieldCustom({super.key,
+  const TextFieldCustom({super.key,
       this.obscureText = false,
       required this.labelText,
       this.suffixIcon,
       required this.controller});
-  String labelText;
-  TextEditingController controller;
-  Widget? suffixIcon;
-  bool obscureText;
+  final String labelText;
+  final TextEditingController controller;
+  final Widget? suffixIcon;
+  final bool obscureText;
 
   @override
   Widget build(BuildContext context) {

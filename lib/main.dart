@@ -17,7 +17,7 @@ class MainApp extends StatelessWidget {
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       initialBinding:  InitialBindings(),
-      initialRoute: AppRouter.tabScreen,
+      initialRoute: AppRouter.splashScreen,
       getPages: AppRouter.pages,
     );
   }
