@@ -36,7 +36,9 @@ class ChatBoxScreen extends GetWidget<ChatBoxController> {
     return Container(
           child: TextField(
             controller: controller.message.value,
-            onSubmitted: (value) {},
+            onSubmitted: (value) {
+              controller.sendMessage();
+            },
             textInputAction: TextInputAction.send,
             decoration: InputDecoration(
               prefixIcon:

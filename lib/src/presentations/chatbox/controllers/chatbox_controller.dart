@@ -3,4 +3,8 @@ import 'package:get/get.dart';
 
 class ChatBoxController extends GetxController {
   Rx<TextEditingController> message = Rx(TextEditingController());
+
+  sendMessage() {
+    
+  }
 }

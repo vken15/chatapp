@@ -10,7 +10,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // api routes
-app.use('/users', require('./controllers/users_controller'));
+//app.use('/api/', require('./controllers/auth_controller'));
+app.use('/api/users', require('./controllers/users_controller'));
+app.use('/api/messages', require('./controllers/message_controller'));
+app.use('/api/chats', require('./controllers/chat_controller'));
 
 // global error handler
 app.use(errorHandler);

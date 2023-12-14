@@ -20,6 +20,8 @@ async function initialize() {
 
     // init models and add them to the exported db object
     db.User = require('../models/user_model')(sequelize);
+    db.Message = require('../models/message_model')(sequelize);
+    db.Chat = require('../models/chat_model')(sequelize);
 
     // sync all models with database
     await sequelize.sync({ alter: true });
