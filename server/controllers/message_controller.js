@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const Joi = require('joi');
 
 const validateRequest = require('_middleware/validate-request');
 const authorize = require('_middleware/authorize');
 const messageService = require('services/message_service');
+const chatService = require('services/chat_service');
 const Message = require("models/message_model");
 
 // routes
@@ -33,7 +35,7 @@ function getAllMessage(req, res, next) {
         //Tim tin nhan theo trang sap xep moi nhat
         //var message = await Message.find({chat: req.params.id})
 
-        res.json(message);
+        //res.json(message);
     }
     catch (e) {
         res.status(500).json({ error: "Không tải được tin nhắn"});
@@ -42,9 +44,12 @@ function getAllMessage(req, res, next) {
 
 function sendMessage(req, res, next) {
     messageService.create(req.body)
-        .then(message => {
-            res.json(message);
+        .then(() => {
+            //res.json(message);
+            res.status(200).json({ message: 'Đã gửi' });
             //update chat
         })
-        .catch(next);
+        .catch(() => {
+            res.status(500).json({ error: 'Không gửi được tin nhắn' });
+        });
 }

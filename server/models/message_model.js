@@ -4,10 +4,7 @@ module.exports = model;
 
 function model(sequelize) {
     const attributes = {
-        sender: { type: DataTypes.INTEGER, allowNull: false },
         content: { type: DataTypes.STRING, allowNull: false },
-        receiver: { type: DataTypes.INTEGER, allowNull: false },
-        chatId: { type: DataTypes.INTEGER, allowNull: false },
     };
 
     const options = {

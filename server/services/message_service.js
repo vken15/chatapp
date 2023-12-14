@@ -1,21 +1,15 @@
 const db = require('_helpers/db');
 
 module.exports = {
-    //getAll,
+    getAllById,
     create,
 };
 
 async function create(params) {
-    // validate
-    if (await db.User.findOne({ where: { username: params.username } })) {
-        throw 'Username "' + params.username + '" is already taken';
-    }
+    // save message
+    await db.Message.create(params);
+}
 
-    // hash password
-    if (params.password) {
-        params.hash = await bcrypt.hash(params.password, 10);
-    }
-
-    // save user
-    await db.User.create(params);
+async function getAllById(id) {
+    return await db.Message.findAll({ where: { chatId: id}});
 }
