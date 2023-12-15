@@ -13,54 +13,46 @@ router.get('/', authorize(), getChat);
 
 module.exports = router;
 
-function chatSchema(req, res, next) {
-    const schema = Joi.object({
-        chatName: Joi.number().integer().required(),
-        isGroupChat: Joi.boolean().required(),
-    });
-    validateRequest(req, next, schema);
-}
-
 function accessChatSchema(req, res, next) {
     const schema = Joi.object({
         userId: Joi.number().integer().required(),
-        otherUserId: Joi.number().integer().required(),
     });
     validateRequest(req, next, schema);
 }
 
 function accessChat(req, res, next) {
-    chatService.findChat(req.body).then((isChat) => {
+    chatService.getByTwoUserId(req.body.userId, req.auth.sub).then((isChat) => {
         if (isChat != null) {
             res.json(isChat);
         }
         else {
-            console.log("CREATE");
-            res.json("CREATE");
-            var Chat = {
-                chatName: "test",
-                isGroupChat: false,
-                users: [
-                    {
-                        id: parseInt(req.body.userId),
-                        User_Chats: {
+            userService.getById(req.body.userId).then((user) => {
+                var Chat = {
+                    chatName: user.fullName,
+                    isGroupChat: false,
+                    users: [
+                        {
+                            id: parseInt(req.body.userId),
+                            User_Chats: {
+                            }
+                        },
+                        {
+                            id: parseInt(req.auth.sub),
+                            User_Chats: {
+                            }
                         }
-                    },
-                    {
-                        id: parseInt(req.body.otherUserId),
-                        User_Chats: {
-                        }
-                    }
-                ]
-            };
-            chatService.create(Chat)
-                .then(() => { res.status(200).json({ message: 'Tạo thành công' }); })
-                .catch(() => { res.status(500).json({ error: 'Không tạo được' }); });
+                    ]
+                };
+                chatService.create(Chat)
+                    .then((chat) => res.json(chat))
+                    .catch(() => res.status(500).json({ error: 'Không tạo được' }));
+            });
         }
-    }
-    );
+    });
 }
 
 function getChat(req, res, next) {
-
+    chatService.getByUserId(req.auth.sub)
+        .then(chat => res.json(chat))
+        .catch(next);
 }

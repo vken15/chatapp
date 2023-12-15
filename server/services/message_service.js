@@ -7,9 +7,31 @@ module.exports = {
 
 async function create(params) {
     // save message
-    await db.Message.create(params);
+    var message = await db.Message.create(params);
+    const sender = await db.User.findByPk(params.senderId);
+
+    //const receiver = await db.User.findByPk(params.receiverId);
+
+    // update chat
+    await db.Chat.update({ latestMessage: message.id }, { where: { id: params.chatId } });
+    const chat = await db.Chat.findByPk(params.chatId);
+    var fullmessage = {
+        id: message.id,
+        sender: sender,
+        content: message.content,
+        receiver: message.receiverId,
+        chat: chat
+    }
+    return fullmessage;
 }
 
-async function getAllById(id) {
-    return await db.Message.findAll({ where: { chatId: id}});
+async function getAllById(id, pageNumber) {
+    const pageSize = 12; //Số tin nhắn hiển thị mỗi trang
+    const page = pageNumber || 1; //Trang hiện tại
+    return await db.Message.findAll({
+        where: { chatId: id },
+        order: [['createdAt', 'DESC']],
+        limit: pageSize,
+        offset: page - 1,
+    });
 }

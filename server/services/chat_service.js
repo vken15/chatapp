@@ -1,28 +1,41 @@
 const db = require('_helpers/db');
-const { where } = require('sequelize');
 
 module.exports = {
-    findChat,
-    getAllByUser,
+    getByTwoUserId,
+    getByUserId,
     create,
 };
 
 async function create(params) {
-    // save message
-    const chat = await db.Chat.create(params, { include: db.User });
+    var chat = await db.Chat.create(params, { include: db.User });
     params.users.forEach(async element => {
         const user = await db.User.findByPk(element.id);
         chat.addUser(user);
     });
-    console.log(chat);
+    return chat;
 }
 
-async function getAllByUser(id) {
-    return await db.Chat.findAll({ where: { id: id } });
+async function getByUserId(userId) {
+    const chatList = await db.User.findOne({ 
+        attributes: { exclude: ['id', 'username', 'fullName', 'createdAt', 'updatedAt'] },
+        include: { 
+            model: db.Chat,
+            include: db.User,
+        }, where: {id: userId} });
+    // const fullChat = {
+    //     id: chatList.Chats.id,
+    //     chatName: chatList.Chats.chatName,
+    //     isGroupChat: chatList.Chats.isGroupChat,
+    //     latestMessage: chatList.Chats.Messages,
+    //     createdAt: chatList.Chats.createdAt,
+    //     updatedAt: chatList.Chats.updatedAt,
+    //     users: chatList.Chats.Users
+    // }
+    return chatList.Chats;
 }
 
-async function findChat(params) {
-    return await db.Chat.findOne({ include: { model: db.User, where: { id: [params.userId, params.otherUserId] } } },
+async function getByTwoUserId(id, userId) {
+    return await db.Chat.findOne({ include: { model: db.User, where: { id: [id, userId] } } },
         {
             where: isGroupChat = false,
         });
