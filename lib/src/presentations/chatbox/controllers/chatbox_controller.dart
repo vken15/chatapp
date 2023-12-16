@@ -44,11 +44,19 @@ class ChatBoxController extends GetxController
     }
   }
 
+  //Lấy dữ liệu lần đầu
   void getMessages() async {
     var client = MessageClient();
     screenState(AppState.loading);
     var response = await client.getMessages(id.value, offset.value);
     screenState(AppState.loaded);
+    messages.assignAll(response);
+  }
+
+  //Lấy dữ liệu những lần tiếp theo
+  void getMoreMessages() async {
+    var client = MessageClient();
+    var response = await client.getMessages(id.value, offset.value);
     messages.insertAll(messages.length, response);
   }
 
@@ -60,7 +68,7 @@ class ChatBoxController extends GetxController
           print("loading...");
           if (messages.length >= (12 * offset.value)) {
             offset++;
-            getMessages();
+            getMoreMessages();
           }
         }
       }
