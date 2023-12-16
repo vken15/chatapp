@@ -27,7 +27,7 @@ async function initialize() {
     db.Message.belongsTo(db.User, {as: 'receiver', foreignKey: 'receiverId', onDelete: "NO ACTION"});
     db.User.belongsToMany(db.Chat, {through: db.User_Chat});
     db.Chat.belongsToMany(db.User, {through: db.User_Chat});
-    db.Chat.hasMany(db.Message, {foreignKey: 'chatId'});
+    db.Chat.belongsTo(db.Message, {foreignKey: 'latestMessage'});
     db.Message.belongsTo(db.Chat, {foreignKey: 'chatId'});
 
     // sync all models with database

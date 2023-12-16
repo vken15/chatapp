@@ -16,21 +16,13 @@ async function create(params) {
 }
 
 async function getByUserId(userId) {
-    const chatList = await db.User.findOne({ 
+    const chatList = await db.User.findOne({
         attributes: { exclude: ['id', 'username', 'fullName', 'createdAt', 'updatedAt'] },
-        include: { 
+        include: {
             model: db.Chat,
-            include: db.User,
-        }, where: {id: userId} });
-    // const fullChat = {
-    //     id: chatList.Chats.id,
-    //     chatName: chatList.Chats.chatName,
-    //     isGroupChat: chatList.Chats.isGroupChat,
-    //     latestMessage: chatList.Chats.Messages,
-    //     createdAt: chatList.Chats.createdAt,
-    //     updatedAt: chatList.Chats.updatedAt,
-    //     users: chatList.Chats.Users
-    // }
+            include: [db.User, db.Message],
+        }, where: { id: userId }
+    });
     return chatList.Chats;
 }
 

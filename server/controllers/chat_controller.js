@@ -26,27 +26,25 @@ function accessChat(req, res, next) {
             res.json(isChat);
         }
         else {
-            userService.getById(req.body.userId).then((user) => {
-                var Chat = {
-                    chatName: user.fullName,
-                    isGroupChat: false,
-                    users: [
-                        {
-                            id: parseInt(req.body.userId),
-                            User_Chats: {
-                            }
-                        },
-                        {
-                            id: parseInt(req.auth.sub),
-                            User_Chats: {
-                            }
+            var Chat = {
+                chatName: "",
+                isGroupChat: false,
+                users: [
+                    {
+                        id: parseInt(req.body.userId),
+                        User_Chats: {
                         }
-                    ]
-                };
-                chatService.create(Chat)
-                    .then((chat) => res.json(chat))
-                    .catch(() => res.status(500).json({ error: 'Không tạo được' }));
-            });
+                    },
+                    {
+                        id: parseInt(req.auth.sub),
+                        User_Chats: {
+                        }
+                    }
+                ]
+            };
+            chatService.create(Chat)
+                .then((chat) => res.json(chat))
+                .catch(() => res.status(500).json({ error: 'Không tạo được' }));
         }
     });
 }
