@@ -30,7 +30,7 @@ async function getAllById(id, pageNumber) {
     const page = pageNumber || 1; //Trang hiện tại
     return await db.Message.findAll({
         where: { chatId: id },
-        order: [['createdAt', 'ASC']],
+        order: [['createdAt', 'DESC']],
         limit: pageSize,
         offset: (page - 1) * pageSize,
     });

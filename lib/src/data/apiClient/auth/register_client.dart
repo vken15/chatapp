@@ -9,14 +9,14 @@ import 'package:http/http.dart' as http;
 class RegisterClient extends BaseClient {
   Future<UserInfo> register(
       {required String fullName, required String username, required String password}) async {
-    var url = "${AppEndpoint.PRODUCT_URL}/users/register";
+    var url = "${AppEndpoint.PRODUCT_URL}${AppEndpoint.registerURL}";
     var data = UserRegister(fullName: fullName, username: username, password: password);
     //var response = await http.post(url, data.toJson());
     var response = await http.post(Uri.parse(url), body: data.toJson());
     if (response.statusCode == 200) {
       return UserInfo.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception("Tên tài khoản đã tồn tại!");
+      throw Exception("Username already exist!");
     }
   }
 }

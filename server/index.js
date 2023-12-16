@@ -10,7 +10,12 @@ const server = app.listen(port, () => {
   console.log(`Server started and running on port ${port}`);
 });
 
-const io = require("socket.io")(server);
+const io = require("socket.io")(server, {
+  pingTimeOut: 60000,
+  cors: {
+    origin: "http:localhost:5001"
+  }
+});
 
 io.on('connection', (socket) => {
   console.log(socket.id, "Connected!");
@@ -39,20 +44,23 @@ io.on('connection', (socket) => {
   });
 
   socket.on('new message', (newMessageReceived) => {
-    var chat = newMessageReceived.chat;
-    var room = chat.id;
+    //var chat = newMessageReceived.chat;
+    //var room = chat;
+    console.log('start');
+    var room = newMessageReceived.chatId;
 
-    var sender = newMessageReceived.sender;
-
-    if (!sender || sender.id) {
+    // var sender = newMessageReceived.sender;
+    var senderId = newMessageReceived.senderId;
+    // if (!sender || sender.id) {
+    if (!senderId) {
       console.log("Sender not defined!");
       return;
     }
 
-    var senderId = sender.id;
-    console.log(senderId + "message sender");
-    const users = chat.users;
-
+    //var senderId = sender.id;
+    console.log(senderId + " message sender");
+    //const users = chat.users;
+    const users = [senderId, newMessageReceived.receiverId];
     if (!users) {
       console.log("Users not defined!");
       return;

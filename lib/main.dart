@@ -3,6 +3,7 @@ import 'package:chatapp/src/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+
 void main() {
   runApp(const MainApp());
 }
@@ -16,7 +17,7 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      initialBinding:  InitialBindings(),
+      initialBinding: InitialBindings(),
       initialRoute: AppRouter.splashScreen,
       getPages: AppRouter.pages,
     );

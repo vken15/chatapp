@@ -12,9 +12,6 @@ class AuthController extends GetxController {
   Rx<bool> hidePass = true.obs;
   Rx<String> messages = "".obs;
 
-  // Rx<TextEditingController> fullName = Rx(TextEditingController());
-  // Rx<TextEditingController> rePassword = Rx(TextEditingController());
-
   Rx<LoginStatus> status = LoginStatus.init.obs;
 
   handleLogin() async {
@@ -27,6 +24,7 @@ class AuthController extends GetxController {
           password: passwordController.value.text);
       if (response.success!) {
         await storage.write(key: "UserToken", value: response.token);
+        await storage.write(key: "userId", value: response.id.toString());
         Get.toNamed(AppRouter.tabScreen);
         status(LoginStatus.success);
       } else {

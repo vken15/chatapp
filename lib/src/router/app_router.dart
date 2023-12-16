@@ -1,10 +1,10 @@
 
 import 'package:chatapp/src/presentations/auth/bindings/auth_bindings.dart';
 import 'package:chatapp/src/presentations/auth/login_screen.dart';
-import 'package:chatapp/src/presentations/register/bindings/register_bindings.dart';
-import 'package:chatapp/src/presentations/register/register_screen.dart';
 import 'package:chatapp/src/presentations/chatbox/bindings/chatbox_binding.dart';
 import 'package:chatapp/src/presentations/chatbox/chatbox_screen.dart';
+import 'package:chatapp/src/presentations/register/bindings/register_bindings.dart';
+import 'package:chatapp/src/presentations/register/register_screen.dart';
 import 'package:chatapp/src/presentations/home/home_screen.dart';
 import 'package:chatapp/src/presentations/setting/bindings/darkmode_bindings.dart';
 import 'package:chatapp/src/presentations/setting/bindings/setting_bindings.dart';
