@@ -107,9 +107,9 @@ class ChatBoxScreen extends GetWidget<ChatBoxController> {
         onChanged: (value) {
           controller.startTyping();
         },
-        onEditingComplete: () {
-          controller.stopTyping();
-        },
+        // onEditingComplete: () {
+        //   controller.stopTyping();
+        // },
         onTapOutside: (value) {
           controller.stopTyping();
         },

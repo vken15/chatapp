@@ -12,7 +12,7 @@ class HomeController extends GetxController
   RxList<GetChats> chatList = <GetChats>[].obs;
   Rx<AppState> screenState = AppState.initial.obs;
   RxInt userId = (-1).obs;
-  RxList<String> online = <String>[].obs;
+  RxList<int> online = <int>[].obs;
   RxBool typing = false.obs;
 
   Future<void> getUserId() async {
@@ -65,7 +65,6 @@ class HomeController extends GetxController
 
   @override
   void onClose() {
-    // TODO: implement onClose
     super.onClose();
     _socketMethod.socketClient.dispose();
   }

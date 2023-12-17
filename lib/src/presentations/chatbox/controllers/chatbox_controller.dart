@@ -37,6 +37,12 @@ class ChatBoxController extends GetxController
         socketMethods.sendStopTypingEvent(id.value);
         messageController.value.clear();
         messages.insert(0, response[1]);
+        Get.find<HomeController>().chatList.forEach((chat) {
+          if (chat.id == response[1].chatId) {
+            chat.latestMessage = response[1];
+          }
+        });
+        Get.find<HomeController>().chatList.refresh();
       });
     }
   }

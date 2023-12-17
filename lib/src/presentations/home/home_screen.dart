@@ -26,50 +26,66 @@ class HomeScreen extends GetWidget<HomeController> {
 
   ListView _buildChatList() {
     return ListView.builder(
-      itemCount: controller.chatList.length,
-      itemBuilder: (context, index) => InkWell(
-        onTap: () {
-          Get.toNamed(AppRouter.chatboxScreen, arguments: {
-            'title': controller.chatList[index].chatName!,
-            'id': controller.chatList[index].id!,
-            'photo': "",
-            'users': controller.chatList[index].users!
-                .map((user) => user.id!)
-                .toList()
-          });
-        },
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          child: ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 4),
-            minLeadingWidth: 0,
-            minVerticalPadding: 0,
-            leading: CircleAvatar(
-              radius: 20,
-              //backgroundImage: ,
-            ),
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(controller.chatList[index].chatName!),
-                Text(
-                  controller.chatList[index].latestMessage!.content!,
-                  style: const TextStyle(color: Colors.grey),
+        itemCount: controller.chatList.length,
+        itemBuilder: (context, index) {
+          var receiver = controller.chatList[index].users?.firstWhere((user) => user.id != controller.userId.value);
+          var chatName = controller.chatList[index].chatName!.isEmpty ? receiver?.fullName ?? "" : controller.chatList[index].chatName;
+          return InkWell(
+            onTap: () {
+              Get.toNamed(AppRouter.chatboxScreen, arguments: {
+                'title': chatName,
+                'id': controller.chatList[index].id!,
+                'photo': "",
+                'users': controller.chatList[index].users!
+                    .map((user) => user.id!)
+                    .toList()
+              });
+            },
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              child: ListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 4),
+                minLeadingWidth: 0,
+                minVerticalPadding: 0,
+                leading: Stack(
+                  alignment: Alignment.bottomLeft,
+                  children: [
+                    CircleAvatar(
+                      radius: 20,
+                      //backgroundImage: ,
+                    ),
+                    Positioned(
+                      right: 3,
+                      child: CircleAvatar(
+                        radius: 5,
+                        backgroundColor: controller.online
+                            .contains(receiver?.id) ? Colors.green : Colors.grey,
+                      ),
+                    )
+                  ],
                 ),
-              ],
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(chatName!),
+                    Text(
+                      controller.chatList[index].latestMessage!.content!,
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
+                trailing: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(controller.msgTime(controller
+                        .chatList[index].latestMessage!.updatedAt
+                        .toString())),
+                    //Text(controller.chatList[index].latestMessage!.content),
+                  ],
+                ),
+              ),
             ),
-            trailing: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(controller.msgTime(controller
-                    .chatList[index].latestMessage!.updatedAt
-                    .toString())),
-                //Text(controller.chatList[index].latestMessage!.content),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+          );
+        });
   }
 }

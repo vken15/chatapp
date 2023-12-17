@@ -27,14 +27,12 @@ io.on('connection', (socket) => {
   });
 
   socket.on('typing', (room) => {
-    console.log("typing");
-    console.log("room");
+    console.log("typing", room);
     socket.to(room).emit('typing', room);
   });
 
   socket.on('typing', (room) => {
-    console.log("stop typing");
-    console.log("room");
+    console.log("stop typing", room);
     socket.to(room).emit('stop typing', room);
   });
 
@@ -58,7 +56,7 @@ io.on('connection', (socket) => {
     }
 
     //var senderId = sender.id;
-    console.log(senderId + " message sender");
+    console.log(senderId, " message sender");
     //const users = chat.users;
     const users = [senderId, newMessageReceived.receiverId];
     if (!users) {

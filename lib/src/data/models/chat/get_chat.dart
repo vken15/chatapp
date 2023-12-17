@@ -24,7 +24,7 @@ class GetChats {
         id = json["id"];
         chatName = json["chatName"];
         isGroupChat = json["isGroupChat"];
-        latestMessage = ReceivedMessage.fromJson(json["Message"]);
+        latestMessage = List<ReceivedMessage>.from(json["Messages"].map((x) => ReceivedMessage.fromJson(x))).first;
         createdAt = DateTime.parse(json["createdAt"]);
         updatedAt = DateTime.parse(json["updatedAt"]);
         users = List<UserInfo>.from(json["Users"].map((x) => UserInfo.fromJson(x)));

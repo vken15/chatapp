@@ -20,7 +20,7 @@ async function getByUserId(userId) {
         attributes: { exclude: ['id', 'username', 'fullName', 'createdAt', 'updatedAt'] },
         include: {
             model: db.Chat,
-            include: [db.User, db.Message],
+            include: [db.User, {model: db.Message, order: [['createdAt', 'DESC']], limit: 1}],
         }, where: { id: userId }
     });
     return chatList.Chats;

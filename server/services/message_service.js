@@ -13,7 +13,7 @@ async function create(params) {
     //const receiver = await db.User.findByPk(params.receiverId);
 
     // update chat
-    await db.Chat.update({ latestMessage: message.id }, { where: { id: params.chatId } });
+    //await db.Chat.update({ latestMessage: message.id }, { where: { id: params.chatId } });
     //const chat = await db.Chat.findByPk(params.chatId);
     // var fullmessage = {
     //     id: message.id,

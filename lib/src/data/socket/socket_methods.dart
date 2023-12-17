@@ -16,12 +16,13 @@ class SocketMethods {
     _socketClient.emit("setup", userId);
     _socketClient.onConnect((_) {
       print("Connected!");
-      _socketClient.on(
-          'online-users',
-          (userId) => {
-                Get.find<HomeController>().online.replaceRange(
-                    0, Get.find<HomeController>().online.length, [userId])
-              });
+    });
+
+    _socketClient.on('online-user', (userId) {
+      Get.find<HomeController>()
+          .online
+          .replaceRange(0, Get.find<HomeController>().online.length, [userId]);
+      //Get.find<HomeController>().online.refresh();
     });
 
     _socketClient.on('typing', (status) {
@@ -37,10 +38,12 @@ class SocketMethods {
           ReceivedMessage.fromJson(newMessageReceived);
       sendStopTypingEvent(receivedMessage.chatId!);
       if (receivedMessage.senderId != userId) {
-        var chat = Get.find<HomeController>().chatList.firstWhere((chat) => chat.id == receivedMessage.chatId);
-        chat.latestMessage = receivedMessage;
-        Get.find<HomeController>().chatList.removeWhere((chat) => chat.id == receivedMessage.chatId);
-        Get.find<HomeController>().chatList.insert(0, chat);
+        Get.find<HomeController>().chatList.forEach((chat) {
+          if (chat.id == receivedMessage.chatId) {
+            chat.latestMessage = receivedMessage;
+          }
+        });
+        Get.find<HomeController>().chatList.refresh();
         try {
           Get.find<ChatBoxController>().messages.insert(0, receivedMessage);
         } catch (e) {
