@@ -30,6 +30,11 @@ class HomeController extends GetxController
     var response = await client.getConversations();
     screenState(AppState.loaded);
     chatList.assignAll(response);
+    List<int> chatIdList = [];
+    for (var chat in chatList) {
+      chatIdList.add(chat.id!);
+    }
+    socketMethods.joinChat(chatIdList);
   }
 
   String msgTime(String time) {
@@ -52,7 +57,9 @@ class HomeController extends GetxController
   @override
   void onInit() {
     super.onInit();
-    getUserId().then((_) => socketMethods.initClient(userId.value));
+    getUserId().then((_) {
+      socketMethods.initClient(userId.value);
+    });
     getChats();
   }
 

@@ -12,13 +12,10 @@ class AuthClient extends BaseClient {
     var url = "${AppEndpoint.PRODUCT_URL}${AppEndpoint.authURL}";
     var user = UserPayload(username: username, password: password);
     var response = await http.post(Uri.parse(url), body: user.toJson());
-    print("B2");
     if (response.statusCode == 200) {
-      print("B3");
       return UserInfo.fromJson(jsonDecode(response.body));
     } else {
-      print("Faild");
-      throw Exception("Username or password don't exist");
+      throw Exception("Tài khoản hoặc mật khẩu không chính xác");
     }
   }
 }

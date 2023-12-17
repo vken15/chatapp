@@ -13,9 +13,9 @@ class SplashController extends GetxController {
         const Duration(seconds: 3),
         () => {
               if (token == null)
-                {Get.toNamed(AppRouter.loginScreen)}
+                {Get.offAndToNamed(AppRouter.loginScreen)}
               else
-                {Get.toNamed(AppRouter.tabScreen)}
+                {Get.offAndToNamed(AppRouter.tabScreen)}
             });
   }
 

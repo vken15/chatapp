@@ -1,5 +1,6 @@
 import 'package:chatapp/src/data/models/message/received_message.dart';
 import 'package:chatapp/src/data/socket/socket_client.dart';
+import 'package:chatapp/src/presentations/chatbox/controllers/chatbox_controller.dart';
 import 'package:chatapp/src/presentations/home/controllers/home_controller.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart';
@@ -18,8 +19,8 @@ class SocketMethods {
       _socketClient.on(
           'online-users',
           (userId) => {
-                    Get.find<HomeController>().online.replaceRange(
-                        0, Get.find<HomeController>().online.length, [userId])
+                Get.find<HomeController>().online.replaceRange(
+                    0, Get.find<HomeController>().online.length, [userId])
               });
     });
 
@@ -36,13 +37,20 @@ class SocketMethods {
           ReceivedMessage.fromJson(newMessageReceived);
       sendStopTypingEvent(receivedMessage.chatId!);
       if (receivedMessage.senderId != userId) {
-        //messages!.insert(0, receivedMessage);
+        var chat = Get.find<HomeController>().chatList.firstWhere((chat) => chat.id == receivedMessage.chatId);
+        chat.latestMessage = receivedMessage;
+        Get.find<HomeController>().chatList.removeWhere((chat) => chat.id == receivedMessage.chatId);
+        Get.find<HomeController>().chatList.insert(0, chat);
+        try {
+          Get.find<ChatBoxController>().messages.insert(0, receivedMessage);
+        } catch (e) {
+          print("không ở trong boxchat");
+        }
       }
     });
   }
 
-  
-
+  //emits
   void newMessageEvent(Map<String, dynamic> emmission) {
     _socketClient.emit('new message', emmission);
   }
@@ -55,7 +63,7 @@ class SocketMethods {
     _socketClient.emit('stop typing', id);
   }
 
-  void joinChat(int id) {
-    _socketClient.emit('join chat', id);
+  void joinChat(List<int> listId) {
+    _socketClient.emit('join chat', listId);
   }
 }

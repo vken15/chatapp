@@ -18,7 +18,7 @@ async function authenticate({ username, password }) {
 
     // authentication fail
     if (!user || !(await bcrypt.compare(password, user.hash)))
-        return { success: false, message: 'Username or password is incorrect' };
+        return { success: false, message: 'Tên người dùng hoặc mật khẩu không chính xác' };
 
     // authentication successful
     const token = jwt.sign({ sub: user.id }, secret, { expiresIn: '7d' });
@@ -36,7 +36,7 @@ async function getById(id) {
 async function create(params) {
     // validate
     if (await db.User.findOne({ where: { username: params.username } })) {
-        throw 'Username "' + params.username + '" is already taken';
+        throw 'Tên người dùng: "' + params.username + '" đã tồn tại';
     }
 
     // hash password
@@ -54,7 +54,7 @@ async function update(id, params) {
     // validate
     const usernameChanged = params.username && user.username !== params.username;
     if (usernameChanged && await db.User.findOne({ where: { username: params.username } })) {
-        throw 'Username "' + params.username + '" is already taken';
+        throw 'Tên người dùng: "' + params.username + '" đã tồn tại';
     }
 
     // hash password if it was entered
@@ -78,7 +78,7 @@ async function _delete(id) {
 
 async function getUser(id) {
     const user = await db.User.findByPk(id);
-    if (!user) throw 'User not found';
+    if (!user) throw 'Người dùng không tồn tại';
     return user;
 }
 

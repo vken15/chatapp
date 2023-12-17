@@ -1,3 +1,5 @@
+import 'package:chatapp/src/components/app_button.dart';
+import 'package:chatapp/src/core/enum/login_status.dart';
 import 'package:chatapp/src/presentations/register/controllers/register_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:chatapp/src/components/app_textfield.dart';
@@ -16,10 +18,21 @@ class RegisterScreen extends GetWidget<RegisterController> {
         () => Column(
           children: [
             TextFieldCustom(
-                labelText: "Họ và tên", controller: controller.fullNameController.value),
+                labelText: "Họ và tên",
+                controller: controller.fullNameController.value,
+                validate: controller.fullNameValidate.value,
+                errorText: "Vui lòng nhập họ và tên",
+                onChanged: (value) {
+                  controller.fullNameValidate.value = false;
+                }),
             TextFieldCustom(
                 labelText: "Tên tài khoản",
-                controller: controller.usernameController.value),
+                controller: controller.usernameController.value,
+                validate: controller.usernameValidate.value,
+                errorText: "Vui lòng nhập tên tài khoản",
+                onChanged: (value) {
+                  controller.usernameValidate.value = false;
+                }),
             TextFieldCustom(
                 labelText: "Mật khẩu",
                 obscureText: controller.hidePass.value,
@@ -30,7 +43,12 @@ class RegisterScreen extends GetWidget<RegisterController> {
                     child: controller.hidePass.value == true
                         ? const Icon(Icons.visibility_off)
                         : const Icon(Icons.visibility)),
-                controller: controller.passwordController.value),
+                controller: controller.passwordController.value,
+                validate: controller.passwordValidate.value,
+                errorText: "Vui lòng nhập mật khẩu",
+                onChanged: (value) {
+                  controller.passwordValidate.value = false;
+                }),
             TextFieldCustom(
                 labelText: "Nhập lại mật khẩu",
                 obscureText: controller.hidePass.value,
@@ -41,22 +59,22 @@ class RegisterScreen extends GetWidget<RegisterController> {
                     child: controller.hidePass.value == true
                         ? const Icon(Icons.visibility_off)
                         : const Icon(Icons.visibility)),
-                controller: controller.rePasswordController.value),
+                controller: controller.rePasswordController.value,
+                validate: controller.rePasswordValidate.value,
+                errorText: "Vui lòng nhập lại mật khẩu",
+                onChanged: (value) {
+                  controller.rePasswordValidate.value = false;
+                }),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
               width: Get.width,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24)),
+              child: ButtonCustom(
+                  text: "Đăng ký",
+                  onPressed: () {
+                    controller.handleRegister();
+                  },
+                  loading: controller.status.value == LoginStatus.loading,
                 ),
-                onPressed: () {
-                  controller.handleRegister();
-                },
-                child: const Text("Đăng ký"),
-              ),
             ),
           ],
         ),

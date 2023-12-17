@@ -16,7 +16,7 @@ class RegisterClient extends BaseClient {
     if (response.statusCode == 200) {
       return UserInfo.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception("Username already exist!");
+      throw Exception("Tên người dùng đã tồn tại!");
     }
   }
 }

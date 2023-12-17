@@ -20,7 +20,7 @@ class ChatBoxController extends GetxController
   RxList<ReceivedMessage> msgList = <ReceivedMessage>[].obs;
   int userId = Get.find<HomeController>().userId.value;
   int receiverId = 0;
-  Rx<ScrollController> scrollController = ScrollController().obs;
+  ScrollController scrollController = ScrollController();
   SocketMethods socketMethods = Get.find<HomeController>().socketMethods;
 
   void sendMessage(String content, int chatId, int receiverId, int senderId) {
@@ -33,11 +33,8 @@ class ChatBoxController extends GetxController
       var client = MessageClient();
       client.sendMessage(model).then((response) {
         var emmission = response[2];
-        print('emmission');
         socketMethods.newMessageEvent(emmission);
-        print('newMessageEvent');
         socketMethods.sendStopTypingEvent(id.value);
-        print('sendStopTypingEvent');
         messageController.value.clear();
         messages.insert(0, response[1]);
       });
@@ -61,10 +58,10 @@ class ChatBoxController extends GetxController
   }
 
   void handleNext() {
-    scrollController.value.addListener(() async {
-      if (scrollController.value.hasClients) {
-        if (scrollController.value.position.maxScrollExtent ==
-            scrollController.value.position.pixels) {
+    scrollController.addListener(() async {
+      if (scrollController.hasClients) {
+        if (scrollController.position.maxScrollExtent ==
+            scrollController.position.pixels) {
           print("loading...");
           if (messages.length >= (12 * offset.value)) {
             offset++;
@@ -94,14 +91,13 @@ class ChatBoxController extends GetxController
     users.value = args['users'];
     receiverId = users.firstWhere((id) => id != userId);
     getMessages();
+    handleNext();
   }
 
   @override
-  void onReady() {
-    // TODO: implement onReady
-    super.onReady();
-    //Get.find<HomeController>().socketMethods.initClient();
-    //Get.find<HomeController>().socketMethods.joinChat(id.value);
-    handleNext();
+  void onClose() {
+    scrollController.dispose();
+    messageController.value.dispose();
+    super.onClose();
   }
 }

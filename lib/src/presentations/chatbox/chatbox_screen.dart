@@ -54,7 +54,7 @@ class ChatBoxScreen extends GetWidget<ChatBoxController> {
       itemCount: controller.messages.length + 1,
       reverse: true,
       //shrinkWrap: true,
-      controller: controller.scrollController.value,
+      controller: controller.scrollController,
       //physics: const PageScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 24.0),
       separatorBuilder: (context, index) => const SizedBox(height: 10),

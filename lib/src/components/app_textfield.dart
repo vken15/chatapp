@@ -2,15 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TextFieldCustom extends StatelessWidget {
-  const TextFieldCustom({super.key,
+  const TextFieldCustom(
+      {super.key,
       this.obscureText = false,
       required this.labelText,
       this.suffixIcon,
-      required this.controller});
+      required this.controller,
+      required this.validate,
+      required this.errorText,
+      this.onChanged});
   final String labelText;
   final TextEditingController controller;
   final Widget? suffixIcon;
   final bool obscureText;
+  final bool validate;
+  final String errorText;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +31,10 @@ class TextFieldCustom extends StatelessWidget {
       child: TextFormField(
         obscureText: obscureText,
         controller: controller,
+        onChanged: onChanged,
         decoration: InputDecoration(
             labelText: labelText,
+            errorText: validate ? errorText : null,
             floatingLabelStyle: TextStyle(
               color: context.isDarkMode ? Colors.white : Colors.black,
             ),

@@ -54,7 +54,7 @@ class AppTabBar extends GetWidget<TabBarController> {
           ),
         ),
         body: controller.isSearch.value
-            ? Center()
+            ? const Center()
             : TabBarView(
                 controller: controller.tabController,
                 children: const [

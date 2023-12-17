@@ -40,7 +40,7 @@ io.on('connection', (socket) => {
 
   socket.on('join chat', (room) => {
     socket.join(room);
-    console.log(userId, " joined: ", room);
+    console.log(socket.id, " joined: ", room);
   });
 
   socket.on('new message', (newMessageReceived) => {
