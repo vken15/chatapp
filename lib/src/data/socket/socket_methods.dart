@@ -18,11 +18,25 @@ class SocketMethods {
       print("Connected!");
     });
 
+    _socketClient.on('online-user-list', (users) {
+      Get.find<HomeController>().online.addAll(users.cast<int>());
+      Get.find<HomeController>().chatList.refresh();
+    });
+
     _socketClient.on('online-user', (userId) {
-      Get.find<HomeController>()
-          .online
-          .replaceRange(0, Get.find<HomeController>().online.length, [userId]);
-      //Get.find<HomeController>().online.refresh();
+      var i = Get.find<HomeController>().online.indexOf(userId);
+      if (i < 0) {
+        Get.find<HomeController>().online.add(userId);
+      }
+      Get.find<HomeController>().chatList.refresh();
+    });
+
+    _socketClient.on('offline-user', (userId) {
+      var i = Get.find<HomeController>().online.indexOf(userId);
+      if (i >= 0) {
+        Get.find<HomeController>().online.remove(userId);
+      }
+      Get.find<HomeController>().chatList.refresh();
     });
 
     _socketClient.on('typing', (status) {

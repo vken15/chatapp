@@ -28,8 +28,11 @@ class HomeScreen extends GetWidget<HomeController> {
     return ListView.builder(
         itemCount: controller.chatList.length,
         itemBuilder: (context, index) {
-          var receiver = controller.chatList[index].users?.firstWhere((user) => user.id != controller.userId.value);
-          var chatName = controller.chatList[index].chatName!.isEmpty ? receiver?.fullName ?? "" : controller.chatList[index].chatName;
+          var receiver = controller.chatList[index].users
+              ?.firstWhere((user) => user.id != controller.userId.value);
+          var chatName = controller.chatList[index].chatName!.isEmpty
+              ? receiver?.fullName ?? ""
+              : controller.chatList[index].chatName;
           return InkWell(
             onTap: () {
               Get.toNamed(AppRouter.chatboxScreen, arguments: {
@@ -58,8 +61,10 @@ class HomeScreen extends GetWidget<HomeController> {
                       right: 3,
                       child: CircleAvatar(
                         radius: 5,
-                        backgroundColor: controller.online
-                            .contains(receiver?.id) ? Colors.green : Colors.grey,
+                        backgroundColor:
+                            controller.online.contains(receiver?.id)
+                                ? Colors.green
+                                : Colors.grey,
                       ),
                     )
                   ],
@@ -69,7 +74,8 @@ class HomeScreen extends GetWidget<HomeController> {
                   children: [
                     Text(chatName!),
                     Text(
-                      controller.chatList[index].latestMessage!.content!,
+                      controller.chatList[index].latestMessage?.content ??
+                          "Không có tin nhắn nào",
                       style: const TextStyle(color: Colors.grey),
                     ),
                   ],
@@ -77,9 +83,11 @@ class HomeScreen extends GetWidget<HomeController> {
                 trailing: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(controller.msgTime(controller
-                        .chatList[index].latestMessage!.updatedAt
-                        .toString())),
+                    Text(controller.chatList[index].latestMessage == null
+                        ? ""
+                        : controller.msgTime(controller
+                            .chatList[index].latestMessage!.updatedAt
+                            .toString())),
                     //Text(controller.chatList[index].latestMessage!.content),
                   ],
                 ),

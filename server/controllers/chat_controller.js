@@ -26,6 +26,7 @@ function accessChat(req, res, next) {
             res.json(isChat);
         }
         else {
+            console.log("CREATE");
             var Chat = {
                 chatName: "",
                 isGroupChat: false,

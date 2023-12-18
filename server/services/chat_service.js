@@ -27,8 +27,17 @@ async function getByUserId(userId) {
 }
 
 async function getByTwoUserId(id, userId) {
-    return await db.Chat.findOne({ include: { model: db.User, where: { id: [id, userId] } } },
-        {
-            where: isGroupChat = false,
-        });
+    const chat = await db.User.findOne({
+        attributes: { exclude: ['id', 'username', 'fullName', 'createdAt', 'updatedAt'] },
+        include: {
+            model: db.Chat,
+            include: {model: db.User, where: {id: id}},
+        },
+        where: {id: userId}});
+        console.log(chat.Chats[0] == undefined);
+    if (chat.Chats[0] == undefined) {
+        return null;
+    } else {
+        return await db.Chat.findByPk(chat.Chats[0].id, {include: db.User});
+    }
 }

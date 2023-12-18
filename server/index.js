@@ -1,5 +1,6 @@
 const { Socket } = require("socket.io");
 const app = require("./app");
+const _ = require("lodash");
 //const http = require("http");
 
 const port = process.env.PORT || 3000;
@@ -17,13 +18,25 @@ const io = require("socket.io")(server, {
   }
 });
 
+const users = {};
+var onlineUsers = [];
+
 io.on('connection', (socket) => {
   console.log(socket.id, "Connected!");
 
+  var userID;
+
   socket.on('setup', (userId) => {
-    socket.join(userId);
+    userID = userId;
+    if (!users[userId]) users[userId] = [];
+    users[userId].push(socket.id);
+    if (onlineUsers.indexOf(userId) < 0) onlineUsers.push(userId);
+    //get current online user
+    console.log(onlineUsers);
+    socket.emit('online-user-list', onlineUsers);
     socket.broadcast.emit('online-user', userId);
     console.log(userId, " online!");
+    console.log(users);
   });
 
   socket.on('typing', (room) => {
@@ -68,12 +81,19 @@ io.on('connection', (socket) => {
     socket.to(room).emit('message sent', "New Message");
   });
 
-  socket.off('setup', () => {
-    console.log('user offline');
-    socket.leave(userId);
-  });
-
   socket.on('disconnect', () => {
-    console.log('Disconnected!', socket.id);
+    //let i = users.indexOf(socket.id);
+    _.remove(users[userID], (u) => u === socket.id);
+    if (users[userID]) {
+      if (users[userID].length === 0) {
+        socket.broadcast.emit('offline-user', userID);
+        delete users[userID];
+        let i = onlineUsers.indexOf(userID);
+        delete onlineUsers[i];
+        onlineUsers = onlineUsers.filter(Boolean);
+      }
+    }
+    console.log(users);
+    console.log(socket.id, 'Disconnected!');
   });
 });

@@ -48,7 +48,7 @@ class HomeController extends GetxController
     } else if (now.year == messageTime.year &&
         now.month == messageTime.month &&
         now.day - messageTime.day == 1) {
-      return "Yesterday";
+      return "Hôm qua";
     } else {
       return DateFormat.yMd().format(messageTime);
     }
