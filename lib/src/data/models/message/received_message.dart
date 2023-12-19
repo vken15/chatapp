@@ -1,23 +1,24 @@
 class ReceivedMessage {
-    int? id;
-    String? content;
-    DateTime? createdAt;
-    DateTime? updatedAt;
-    int? senderId;
-    int? receiverId;
-    int? chatId;
+  int? id;
+  String? content;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  int? senderId;
+  int? receiverId;
+  int? chatId;
 
-    ReceivedMessage({
-        required this.id,
-        required this.content,
-        required this.createdAt,
-        required this.updatedAt,
-        required this.senderId,
-        required this.receiverId,
-        required this.chatId,
-    });
+  ReceivedMessage({
+    required this.id,
+    required this.content,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.senderId,
+    required this.receiverId,
+    required this.chatId,
+  });
 
-    factory ReceivedMessage.fromJson(Map<String, dynamic> json) => ReceivedMessage(
+  factory ReceivedMessage.fromJson(Map<String, dynamic> json) =>
+      ReceivedMessage(
         id: json["id"],
         content: json["content"],
         createdAt: DateTime.parse(json["createdAt"]),
@@ -25,5 +26,15 @@ class ReceivedMessage {
         senderId: json["senderId"],
         receiverId: json["receiverId"],
         chatId: json["chatId"],
-    );
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "content": content,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "senderId": senderId,
+        "receiverId": receiverId,
+        "chatId": chatId,
+      };
 }

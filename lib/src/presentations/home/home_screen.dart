@@ -39,9 +39,7 @@ class HomeScreen extends GetWidget<HomeController> {
                 'title': chatName,
                 'id': controller.chatList[index].id!,
                 'photo': "",
-                'users': controller.chatList[index].users!
-                    .map((user) => user.id!)
-                    .toList()
+                'receiver': receiver,
               });
             },
             child: Container(
@@ -53,7 +51,7 @@ class HomeScreen extends GetWidget<HomeController> {
                 leading: Stack(
                   alignment: Alignment.bottomLeft,
                   children: [
-                    CircleAvatar(
+                    const CircleAvatar(
                       radius: 20,
                       //backgroundImage: ,
                     ),

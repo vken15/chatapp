@@ -9,14 +9,11 @@ class SplashController extends GetxController {
   Future<void> getToken() async {
     var token = await storage.read(key: "UserToken");
     userToken(token);
-    Future.delayed(
-        const Duration(seconds: 3),
-        () => {
-              if (token == null)
-                {Get.offAndToNamed(AppRouter.loginScreen)}
-              else
-                {Get.offAndToNamed(AppRouter.tabScreen)}
-            });
+    if (token == null) {
+      Get.offAndToNamed(AppRouter.loginScreen);
+    } else {
+      Get.offAndToNamed(AppRouter.tabScreen);
+    }
   }
 
   @override

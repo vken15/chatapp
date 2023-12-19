@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 class ChatBoxBindings extends Bindings {
   @override
   void dependencies() {
-    Get.put(ChatBoxController());
     Get.put(HomeController());
+    Get.put(ChatBoxController());
   }
 }

@@ -1,5 +1,7 @@
+import 'package:chatapp/src/components/show_snack_bar.dart';
 import 'package:chatapp/src/core/enum/app_state.dart';
 import 'package:chatapp/src/data/apiClient/chat/chat_client.dart';
+import 'package:chatapp/src/data/local/dao/chat_dao.dart';
 import 'package:chatapp/src/data/models/chat/get_chat.dart';
 import 'package:chatapp/src/data/socket/socket_methods.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -25,16 +27,34 @@ class HomeController extends GetxController
   SocketMethods get socketMethods => _socketMethod;
 
   getChats() async {
-    var client = ChatClient();
+    var chatDao = ChatDao();
     screenState(AppState.loading);
-    var response = await client.getConversations();
-    screenState(AppState.loaded);
-    chatList.assignAll(response);
-    List<int> chatIdList = [];
-    for (var chat in chatList) {
-      chatIdList.add(chat.id!);
+    var data = await chatDao.getAll();
+    if (data.isNotEmpty) {
+      chatList.assignAll(data);
+      screenState(AppState.loaded);
     }
-    socketMethods.joinChat(chatIdList);
+    try {
+      var client = ChatClient();
+      var response = await client.getConversations();
+      if (response.isEmpty) {
+        screenState(AppState.empty);
+      } else {
+        screenState(AppState.loaded);
+        chatList.assignAll(response);
+        List<int> chatIdList = [];
+        for (var chat in chatList) {
+          chatDao.insert(chat);
+          chatIdList.add(chat.id!);
+        }
+        socketMethods.joinChat(chatIdList);
+      }
+    } catch (e) {
+      ShowSnackBar.showSnackBar("Không có kết nối");
+      if (chatList.isEmpty) {
+        screenState(AppState.error);
+      }
+    }
   }
 
   String msgTime(String time) {

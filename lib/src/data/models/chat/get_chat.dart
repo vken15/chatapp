@@ -25,9 +25,23 @@ class GetChats {
     chatName = json["chatName"];
     isGroupChat = json["isGroupChat"];
     latestMessage = List<ReceivedMessage>.from(
-                    json["Messages"].map((x) => ReceivedMessage.fromJson(x))).length == 1
+                    json["Messages"].map((x) => ReceivedMessage.fromJson(x)))
+                .length ==
+            1
         ? List<ReceivedMessage>.from(
             json["Messages"].map((x) => ReceivedMessage.fromJson(x))).first
+        : null;
+    createdAt = DateTime.parse(json["createdAt"]);
+    updatedAt = DateTime.parse(json["updatedAt"]);
+    users = List<UserInfo>.from(json["Users"].map((x) => UserInfo.fromJson(x)));
+  }
+
+  GetChats.fromJson2(Map<String, dynamic> json) {
+    id = json["id"];
+    chatName = json["chatName"];
+    isGroupChat = json["isGroupChat"];
+    latestMessage = json["latestMessage"] != null
+        ? ReceivedMessage.fromJson(json["latestMessage"])
         : null;
     createdAt = DateTime.parse(json["createdAt"]);
     updatedAt = DateTime.parse(json["updatedAt"]);
@@ -38,41 +52,9 @@ class GetChats {
         "id": id,
         "chatName": chatName,
         "isGroupChat": isGroupChat,
-        "latestMessage": latestMessage,
+        "latestMessage": latestMessage?.toJson(),
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "Users": List<dynamic>.from(users!.map((x) => x.toJson())),
       };
 }
-
-// class User {
-//     int? id;
-//     String? fullName;
-//     String? username;
-//     DateTime? createdAt;
-//     DateTime? updatedAt;
-
-//     User({
-//         required this.id,
-//         required this.fullName,
-//         required this.username,
-//         required this.createdAt,
-//         required this.updatedAt,
-//     });
-
-//     User.fromJson(Map<String, dynamic> json) {
-//         id = json["id"];
-//         fullName = json["fullName"];
-//         username = json["username"];
-//         createdAt = DateTime.parse(json["createdAt"]);
-//         updatedAt = DateTime.parse(json["updatedAt"]);
-//     }
-
-//     Map<String, dynamic> toJson() => {
-//         "id": id,
-//         "fullName": fullName,
-//         "username": username,
-//         "createdAt": createdAt?.toIso8601String(),
-//         "updatedAt": updatedAt?.toIso8601String(),
-//     };
-// }

@@ -1,15 +1,15 @@
 class InitialChat {
-    int id;
+  int id;
 
-    InitialChat({
-        required this.id,
-    });
+  InitialChat({
+    required this.id,
+  });
 
-    factory InitialChat.fromJson(Map<String, dynamic> json) => InitialChat(
+  factory InitialChat.fromJson(Map<String, dynamic> json) => InitialChat(
         id: json["id"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
-    };
+      };
 }

@@ -1,3 +1,4 @@
+import 'package:chatapp/src/components/show_snack_bar.dart';
 import 'package:chatapp/src/core/enum/login_status.dart';
 import 'package:chatapp/src/data/apiClient/auth/register_client.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class RegisterController extends GetxController {
         !passwordValidate.value &&
         !rePasswordValidate.value) {
       if (passwordController.value.text != rePasswordController.value.text) {
-        showSnackBar("Mật khẩu nhập lại không đúng");
+        ShowSnackBar.showSnackBar("Mật khẩu nhập lại không đúng");
       } else {
         status(LoginStatus.loading);
         var client = RegisterClient();
@@ -45,26 +46,14 @@ class RegisterController extends GetxController {
             Get.toNamed(AppRouter.loginScreen);
           } else {
             status(LoginStatus.faild);
-            showSnackBar(response.message);
+            ShowSnackBar.showSnackBar(response.message);
           }
         } catch (e) {
           status(LoginStatus.faild);
-          showSnackBar(e.toString());
+          ShowSnackBar.showSnackBar(e.toString());
           //rethrow;
         }
       }
     }
-  }
-
-  void showSnackBar(String? message) {
-    Get.snackbar(
-      "Lỗi",
-      message ?? "",
-      snackPosition: SnackPosition.BOTTOM,
-      colorText: Colors.white,
-      borderRadius: 10,
-      margin: const EdgeInsets.all(12),
-      backgroundColor: Colors.black.withOpacity(0.5),
-    );
   }
 }

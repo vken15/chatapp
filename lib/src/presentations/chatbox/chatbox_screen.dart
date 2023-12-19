@@ -4,6 +4,7 @@ import 'package:chatapp/src/core/enum/app_state.dart';
 import 'package:chatapp/src/presentations/chatbox/controllers/chatbox_controller.dart';
 import 'package:chatapp/src/presentations/home/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class ChatBoxScreen extends GetWidget<ChatBoxController> {
@@ -19,12 +20,22 @@ class ChatBoxScreen extends GetWidget<ChatBoxController> {
               style: const TextStyle(
                 fontSize: 20,
               ),
-              children: const [
+              children: [
                 TextSpan(
-                    text: "Hoạt động 1 giờ trước",
-                    style: TextStyle(fontSize: 15, color: Colors.grey))
+                    text: controller.receiver.lastOnline == null
+                        ? ""
+                        : controller.lastOnlineCalc(
+                            controller.receiver.lastOnline!),
+                    style: const TextStyle(fontSize: 15, color: Colors.grey))
               ]),
         ),
+        actions: [
+          IconButton(onPressed: () async {
+            // const channel = MethodChannel('flutter_channel');
+            // bool test = await channel.invokeMethod('getChatHead');
+            // print(test);
+          }, icon: const Icon(Icons.photo_size_select_small))
+        ],
         //backgroundColor: Colors.blue,
       ),
       body: Column(
@@ -36,7 +47,7 @@ class ChatBoxScreen extends GetWidget<ChatBoxController> {
               } else if (controller.screenState.value == AppState.error) {
                 return const Center(child: Text("Error"));
               } else if (controller.screenState.value == AppState.empty) {
-                return const Center(child: Text("You do not have a message!"));
+                return const Center(child: Text("Không có tin nhắn nào!"));
               } else {
                 return _buildChatContent();
               }
@@ -91,8 +102,11 @@ class ChatBoxScreen extends GetWidget<ChatBoxController> {
         messageController: controller.messageController.value,
         suffixIcon: GestureDetector(
           onTap: () {
-            controller.sendMessage(controller.messageController.value.text,
-                controller.id.value, controller.receiverId, controller.userId);
+            controller.sendMessage(
+                controller.messageController.value.text,
+                controller.id.value,
+                controller.receiver.id!,
+                controller.userId);
           },
           child: const Icon(
             Icons.send,
@@ -102,7 +116,7 @@ class ChatBoxScreen extends GetWidget<ChatBoxController> {
         ),
         onSubmitted: (value) {
           controller.sendMessage(value, controller.id.value,
-              controller.receiverId, controller.userId);
+              controller.receiver.id!, controller.userId);
         },
         onChanged: (value) {
           controller.startTyping();

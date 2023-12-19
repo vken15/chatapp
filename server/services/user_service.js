@@ -10,6 +10,7 @@ module.exports = {
     getById,
     create,
     update,
+    updateLastOnline,
     delete: _delete
 };
 
@@ -67,6 +68,14 @@ async function update(id, params) {
     await user.save();
 
     return omitHash(user.get());
+}
+
+async function updateLastOnline(id) {
+    const user = await getUser(id);
+    const time = new Date();
+    user.lastOnline = time;
+    await user.save();
+    return user;
 }
 
 async function _delete(id) {

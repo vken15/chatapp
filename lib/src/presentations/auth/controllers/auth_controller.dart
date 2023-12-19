@@ -1,3 +1,4 @@
+import 'package:chatapp/src/components/show_snack_bar.dart';
 import 'package:chatapp/src/data/apiClient/auth/auth_client.dart';
 import 'package:flutter/material.dart';
 import 'package:chatapp/src/core/enum/login_status.dart';
@@ -35,26 +36,15 @@ class AuthController extends GetxController {
         } else {
           status(LoginStatus.faild);
           //messages(response.message);
-          showSnackBar(response.message);
+          ShowSnackBar.showSnackBar(response.message);
         }
       } catch (e) {
         status(LoginStatus.faild);
         //messages(e.toString());
-        showSnackBar(e.toString());
+        ShowSnackBar.showSnackBar(e.toString());
         //rethrow;
       }
     }
   }
 
-  void showSnackBar(String? message) {
-    Get.snackbar(
-      "Lỗi",
-      message ?? "",
-      snackPosition: SnackPosition.BOTTOM,
-      colorText: Colors.white,
-      borderRadius: 10,
-      margin: const EdgeInsets.all(12),
-      backgroundColor: Colors.black.withOpacity(0.5),
-    );
-  }
 }

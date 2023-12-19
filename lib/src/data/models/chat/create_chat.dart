@@ -1,15 +1,15 @@
 class CreateChat {
-    int userId;
+  int userId;
 
-    CreateChat({
-        required this.userId,
-    });
+  CreateChat({
+    required this.userId,
+  });
 
-    factory CreateChat.fromJson(Map<String, dynamic> json) => CreateChat(
+  factory CreateChat.fromJson(Map<String, dynamic> json) => CreateChat(
         userId: json["userId"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "userId": userId,
-    };
+      };
 }

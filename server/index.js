@@ -2,6 +2,7 @@ const { Socket } = require("socket.io");
 const app = require("./app");
 const _ = require("lodash");
 //const http = require("http");
+const userService = require('services/user_service');
 
 const port = process.env.PORT || 3000;
 
@@ -91,6 +92,11 @@ io.on('connection', (socket) => {
         let i = onlineUsers.indexOf(userID);
         delete onlineUsers[i];
         onlineUsers = onlineUsers.filter(Boolean);
+        try {
+          userService.updateLastOnline(userID);
+        } catch (e) {
+          console.log(e);
+        }
       }
     }
     console.log(users);

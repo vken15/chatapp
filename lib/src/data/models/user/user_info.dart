@@ -5,6 +5,7 @@ class UserInfo {
   String? message;
   String? fullName;
   String? username;
+  String? lastOnline;
 
   UserInfo(
       {
@@ -14,6 +15,7 @@ class UserInfo {
       this.message,
       this.fullName,
       this.username,
+      this.lastOnline,
       });
 
   UserInfo.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class UserInfo {
     message = json['message'];
     fullName = json['fullName'];
     username = json['username'];
+    lastOnline = json['lastOnline'];
   }
 
   Map<String, dynamic> toJson() {
@@ -34,6 +37,7 @@ class UserInfo {
     //data['RefreshToken'] = refreshToken;
     data['fullName'] = fullName;
     data['username'] = username;
+    data['lastOnline'] = lastOnline;
     return data;
   }
 }
