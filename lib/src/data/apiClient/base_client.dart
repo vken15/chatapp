@@ -4,6 +4,6 @@ import 'package:get/get.dart';
 abstract class BaseClient extends GetConnect {
   @override
   void onInit() {
-    httpClient.baseUrl = AppEndpoint.PRODUCT_URL;
+    httpClient.baseUrl = AppEndpoint.APP_URL;
   }
 }

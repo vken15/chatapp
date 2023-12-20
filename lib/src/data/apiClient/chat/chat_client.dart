@@ -14,7 +14,7 @@ class ChatClient extends BaseClient {
   Future<List<dynamic>> accessChat(CreateChat model) async {
     const storage = FlutterSecureStorage();
     var token = await storage.read(key: "UserToken");
-    var url = "${AppEndpoint.PRODUCT_URL}${AppEndpoint.chatURL}";
+    var url = "${AppEndpoint.APP_URL}${AppEndpoint.chatURL}";
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'
@@ -38,7 +38,7 @@ class ChatClient extends BaseClient {
   Future<List<GetChats>> getConversations() async {
     const storage = FlutterSecureStorage();
     var token = await storage.read(key: "UserToken");
-    var url = "${AppEndpoint.PRODUCT_URL}${AppEndpoint.chatURL}";
+    var url = "${AppEndpoint.APP_URL}${AppEndpoint.chatURL}";
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'

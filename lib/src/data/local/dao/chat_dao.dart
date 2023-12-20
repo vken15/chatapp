@@ -8,19 +8,23 @@ class ChatDao {
 
   Future<Database?> get _db async => await LocalDataBase.instance.database;
 
-  Future insert(GetChats chat) async {
+  Future insertOrUpdate(GetChats chat) async {
     await _chatStore.record(chat.id!).put((await _db) as Database, chat.toJson());
   }
 
-  Future update(GetChats chat) async {
-    final finder = Finder(filter: Filter.byKey(chat.id));
-    await _chatStore.update((await _db) as Database, chat.toJson(),
-        finder: finder);
-  }
+  // Future update(GetChats chat) async {
+  //   final finder = Finder(filter: Filter.byKey(chat.id));
+  //   await _chatStore.update((await _db) as Database, chat.toJson(),
+  //       finder: finder);
+  // }
 
   Future delete(GetChats chat) async {
     final finder = Finder(filter: Filter.byKey(chat.id));
     await _chatStore.delete((await _db) as Database, finder: finder);
+  }
+
+  Future deleteAll() async {
+    await _chatStore.delete((await _db) as Database);
   }
 
   Future<List<GetChats>> getAll() async {
@@ -29,7 +33,7 @@ class ChatDao {
     );
     return recordSnapshot.map((snapshot) {
       final chats = GetChats.fromJson2(snapshot.value);
-      chats.id = snapshot.key;
+      //chats.id = snapshot.key;
       return chats;
     }).toList();
   }

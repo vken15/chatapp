@@ -8,19 +8,23 @@ class MessageDao {
 
   Future<Database?> get _db async => await LocalDataBase.instance.database;
 
-  Future insert(ReceivedMessage message) async {
+  Future insertOrUpdate(ReceivedMessage message) async {
     await _messageStore.record(message.id!).put((await _db) as Database, message.toJson());
   }
 
-  Future update(ReceivedMessage message) async {
-    final finder = Finder(filter: Filter.byKey(message.id));
-    await _messageStore.update((await _db) as Database, message.toJson(),
-        finder: finder);
-  }
+  // Future update(ReceivedMessage message) async {
+  //   final finder = Finder(filter: Filter.byKey(message.id));
+  //   await _messageStore.update((await _db) as Database, message.toJson(),
+  //       finder: finder);
+  // }
 
   Future delete(ReceivedMessage message) async {
     final finder = Finder(filter: Filter.byKey(message.id));
     await _messageStore.delete((await _db) as Database, finder: finder);
+  }
+
+  Future deleteAll() async {
+    await _messageStore.delete((await _db) as Database);
   }
 
   Future<List<ReceivedMessage>> getAllByIdSortedByLatest(int chatId, pageNumber) async {
@@ -33,7 +37,7 @@ class MessageDao {
     );
     return recordSnapshot.map((snapshot) {
       final messages = ReceivedMessage.fromJson(snapshot.value);
-      messages.chatId = snapshot.key;
+      //messages.chatId = snapshot.key;
       return messages;
     }).toList();
   }

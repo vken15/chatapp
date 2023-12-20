@@ -71,7 +71,7 @@ class ChatBoxController extends GetxController
         screenState(AppState.loaded);
         messages.assignAll(response);
         for (var message in messages) {
-          messageDao.insert(message);
+          messageDao.insertOrUpdate(message);
         }
       }
     } catch (e) {
@@ -90,7 +90,7 @@ class ChatBoxController extends GetxController
       var response = await client.getMessages(id.value, offset.value);
       messages.insertAll(messages.length, response);
       for (var message in messages) {
-        messageDao.insert(message);
+        messageDao.insertOrUpdate(message);
       }
     } catch (e) {
       var data =

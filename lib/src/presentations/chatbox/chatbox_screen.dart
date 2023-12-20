@@ -4,7 +4,6 @@ import 'package:chatapp/src/core/enum/app_state.dart';
 import 'package:chatapp/src/presentations/chatbox/controllers/chatbox_controller.dart';
 import 'package:chatapp/src/presentations/home/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class ChatBoxScreen extends GetWidget<ChatBoxController> {

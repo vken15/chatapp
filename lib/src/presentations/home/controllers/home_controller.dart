@@ -44,7 +44,7 @@ class HomeController extends GetxController
         chatList.assignAll(response);
         List<int> chatIdList = [];
         for (var chat in chatList) {
-          chatDao.insert(chat);
+          chatDao.insertOrUpdate(chat);
           chatIdList.add(chat.id!);
         }
         socketMethods.joinChat(chatIdList);

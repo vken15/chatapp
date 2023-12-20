@@ -1,5 +1,6 @@
 import 'package:chatapp/src/components/show_snack_bar.dart';
 import 'package:chatapp/src/data/apiClient/auth/auth_client.dart';
+import 'package:chatapp/src/data/local/dao/user_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:chatapp/src/core/enum/login_status.dart';
 import 'package:chatapp/src/router/app_router.dart';
@@ -31,6 +32,8 @@ class AuthController extends GetxController {
         if (response.success!) {
           await storage.write(key: "UserToken", value: response.token);
           await storage.write(key: "userId", value: response.id.toString());
+          var userDao = UserDao();
+          userDao.insertOrUpdate(response);
           Get.offAndToNamed(AppRouter.tabScreen);
           status(LoginStatus.success);
         } else {

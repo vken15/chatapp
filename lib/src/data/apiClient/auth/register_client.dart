@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 class RegisterClient extends BaseClient {
   Future<UserInfo> register(
       {required String fullName, required String username, required String password}) async {
-    var url = "${AppEndpoint.PRODUCT_URL}${AppEndpoint.registerURL}";
+    var url = "${AppEndpoint.APP_URL}${AppEndpoint.registerURL}";
     var data = UserRegister(fullName: fullName, username: username, password: password);
     //var response = await http.post(url, data.toJson());
     var response = await http.post(Uri.parse(url), body: data.toJson());

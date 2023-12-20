@@ -5,6 +5,7 @@ class UserInfo {
   String? message;
   String? fullName;
   String? username;
+  String? photo;
   String? lastOnline;
 
   UserInfo(
@@ -15,6 +16,7 @@ class UserInfo {
       this.message,
       this.fullName,
       this.username,
+      this.photo,
       this.lastOnline,
       });
 
@@ -25,6 +27,7 @@ class UserInfo {
     message = json['message'];
     fullName = json['fullName'];
     username = json['username'];
+    photo = json['photo'];
     lastOnline = json['lastOnline'];
   }
 
@@ -37,6 +40,7 @@ class UserInfo {
     //data['RefreshToken'] = refreshToken;
     data['fullName'] = fullName;
     data['username'] = username;
+    data['photo'] = photo;
     data['lastOnline'] = lastOnline;
     return data;
   }

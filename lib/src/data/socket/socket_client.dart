@@ -5,7 +5,7 @@ class SocketClient {
   io.Socket? socket;
   static SocketClient? _instance;
   SocketClient._internal() {
-    socket = io.io(AppEndpoint.PRODUCT_URL, <String, dynamic>{
+    socket = io.io(AppEndpoint.APP_URL, <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false,
     });

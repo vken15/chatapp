@@ -22,7 +22,7 @@ class MessageTextField extends StatelessWidget {
         filled: true,
         prefixIcon: IconButton(onPressed: () {}, icon: const Icon(Icons.face)),
         hintText: "Type your message here",
-        hintStyle: TextStyle(),
+        hintStyle: const TextStyle(),
         suffixIcon: suffixIcon,
       ),
       onChanged: onChanged,
