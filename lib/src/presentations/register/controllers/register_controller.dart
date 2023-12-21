@@ -1,4 +1,4 @@
-import 'package:chatapp/src/components/show_snack_bar.dart';
+import 'package:chatapp/src/core/utils/show_snack_bar.dart';
 import 'package:chatapp/src/core/enum/login_status.dart';
 import 'package:chatapp/src/data/apiClient/auth/register_client.dart';
 import 'package:flutter/material.dart';

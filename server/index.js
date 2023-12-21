@@ -2,7 +2,6 @@ const { Socket } = require("socket.io");
 const app = require("./app");
 const _ = require("lodash");
 //const http = require("http");
-const userService = require('services/user_service');
 
 const port = process.env.PORT || 3000;
 
@@ -45,7 +44,7 @@ io.on('connection', (socket) => {
     socket.to(room).emit('typing', room);
   });
 
-  socket.on('typing', (room) => {
+  socket.on('stop typing', (room) => {
     console.log("stop typing", room);
     socket.to(room).emit('stop typing', room);
   });
@@ -56,22 +55,16 @@ io.on('connection', (socket) => {
   });
 
   socket.on('new message', (newMessageReceived) => {
-    //var chat = newMessageReceived.chat;
-    //var room = chat;
     console.log('start');
     var room = newMessageReceived.chatId;
 
-    // var sender = newMessageReceived.sender;
     var senderId = newMessageReceived.senderId;
-    // if (!sender || sender.id) {
     if (!senderId) {
       console.log("Sender not defined!");
       return;
     }
 
-    //var senderId = sender.id;
     console.log(senderId, " message sender");
-    //const users = chat.users;
     const users = [senderId, newMessageReceived.receiverId];
     if (!users) {
       console.log("Users not defined!");
@@ -82,8 +75,15 @@ io.on('connection', (socket) => {
     socket.to(room).emit('message sent', "New Message");
   });
 
+  // socket.on('update profile photo', (id, encodedImage) => {
+  //   try {
+  //     //await userService.get
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // });
+
   socket.on('disconnect', () => {
-    //let i = users.indexOf(socket.id);
     _.remove(users[userID], (u) => u === socket.id);
     if (users[userID]) {
       if (users[userID].length === 0) {

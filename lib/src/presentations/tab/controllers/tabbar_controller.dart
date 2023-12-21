@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
@@ -25,23 +23,23 @@ class TabBarController extends GetxController
     userToken(token);
   }
 
-  Future<void> hasNetwork() async {
-    try {
-      final result = await InternetAddress.lookup('example.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        print('connected');
-      }
-    } on SocketException catch (_) {
-      print('not connected');
-    }
-  }
+  // Future<void> hasNetwork() async {
+  //   try {
+  //     final result = await InternetAddress.lookup('example.com');
+  //     if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+  //       print('connected');
+  //     }
+  //   } on SocketException catch (_) {
+  //     print('not connected');
+  //   }
+  // }
 
   @override
   void onInit() {
     super.onInit();
     tabController = TabController(vsync: this, length: tabs.length);
     getToken();
-    hasNetwork();
+    //hasNetwork();
   }
 
   @override

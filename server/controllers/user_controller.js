@@ -5,10 +5,13 @@ const Joi = require('joi');
 const validateRequest = require('_middleware/validate-request');
 const authorize = require('_middleware/authorize')
 const userService = require('services/user_service');
+const imageService = require('services/image_service');
 
 // routes
 router.post('/authenticate', authenticateSchema, authenticate);
 router.post('/register', registerSchema, register);
+router.post('/upload', authorize(), updatePhoto);
+router.post('/download', authorize(), getPhoto);
 router.get('/', authorize(), getAll);
 router.get('/current', authorize(), getCurrent);
 router.get('/:id', authorize(), getById);
@@ -42,7 +45,7 @@ function registerSchema(req, res, next) {
 
 function register(req, res, next) {
     userService.create(req.body)
-        .then(() => res.json({success: true, message: 'Đăng ký tài khoản thành công' }))
+        .then(() => res.json({ success: true, message: 'Đăng ký tài khoản thành công' }))
         .catch(next);
 }
 
@@ -62,6 +65,12 @@ function getById(req, res, next) {
         .catch(next);
 }
 
+function getPhoto(req, res, next) {
+    imageService.downloadPhoto(req.body)
+        .then(userImage => res.json(userImage))
+        .catch(next);
+}
+
 function updateSchema(req, res, next) {
     const schema = Joi.object({
         fullName: Joi.string().empty(''),
@@ -74,6 +83,14 @@ function updateSchema(req, res, next) {
 function update(req, res, next) {
     userService.update(req.params.id, req.body)
         .then(user => res.json(user))
+        .catch(next);
+}
+
+function updatePhoto(req, res, next) {
+    imageService.uploadPhoto(req.body)
+        .then(imageUrl => userService.updatePhoto(req.auth.sub, imageUrl)
+            .then(() => res.json('Cập nhật ảnh thành công'))
+            .catch(next))
         .catch(next);
 }
 

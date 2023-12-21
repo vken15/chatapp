@@ -61,8 +61,11 @@ class ProfileAppBar extends SliverPersistentHeaderDelegate {
             child: GestureDetector(
               onTap: onAvatarTap,
               child: CircleAvatar(
-                radius: 75,
-                backgroundImage: avatarImage,
+                radius: 80,
+                child: CircleAvatar(
+                  radius: 75,
+                  backgroundImage: avatarImage,
+                ),
               ),
             ),
           ),

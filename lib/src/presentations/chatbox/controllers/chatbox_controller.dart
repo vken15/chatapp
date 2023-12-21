@@ -1,4 +1,4 @@
-import 'package:chatapp/src/components/show_snack_bar.dart';
+import 'package:chatapp/src/core/utils/show_snack_bar.dart';
 import 'package:chatapp/src/core/enum/app_state.dart';
 import 'package:chatapp/src/data/apiClient/message/message_client.dart';
 import 'package:chatapp/src/data/local/dao/message_dao.dart';
@@ -159,7 +159,7 @@ class ChatBoxController extends GetxController
 
     id.value = args['id'];
     title.value = args['title'];
-    //photo.value = args['photo'];
+    photo.value = args['photo'];
     receiver = args['receiver'];
     getMessages();
     handleNext();

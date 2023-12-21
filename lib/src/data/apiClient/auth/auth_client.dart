@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 class AuthClient extends BaseClient {
   Future<UserInfo> login(
       {required String username, required String password}) async {
-    var url = "${AppEndpoint.APP_URL}${AppEndpoint.authURL}";
+    var url = "${AppEndpoint.APP_URL}${AppEndpoint.AUTH_URL}";
     var user = UserPayload(username: username, password: password);
     var response = await http.post(Uri.parse(url), body: user.toJson());
     if (response.statusCode == 200) {

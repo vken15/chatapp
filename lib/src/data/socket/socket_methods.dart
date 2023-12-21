@@ -83,4 +83,8 @@ class SocketMethods {
   void joinChat(List<int> listId) {
     _socketClient.emit('join chat', listId);
   }
+
+  // void updateProfilePhoto(int id,Uint8List encodedImage) {
+  //   _socketClient.emit('update profile photo', {id, encodedImage});
+  // }
 }

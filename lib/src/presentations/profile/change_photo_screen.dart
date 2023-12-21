@@ -1,5 +1,6 @@
 import 'package:chatapp/src/components/app_button.dart';
 import 'package:chatapp/src/components/interactive_image.dart';
+import 'package:chatapp/src/core/enum/app_state.dart';
 import 'package:chatapp/src/presentations/profile/controllers/change_photo_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,15 +23,10 @@ class ChangePhotoScreen extends GetWidget<ChangePhotoController> {
                   Container(color: Colors.black),
                   Center(
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.width,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: InteractiveImage(
-                          image: Image.file(
-                            controller.selectedImage.value!,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                      height: MediaQuery.sizeOf(context).width,
+                      child: const Padding(
+                        padding: EdgeInsets.all(10),
+                        child: InteractiveImage(),
                       ),
                     ),
                   ),
@@ -43,18 +39,27 @@ class ChangePhotoScreen extends GetWidget<ChangePhotoController> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  Positioned(
-                    bottom: 0,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ButtonCustom(
-                        onPressed: () {
-                          controller.saveImage();
-                        },
-                        text: "Xong",
+                  controller.screenState.value == AppState.loading ? 
+                  Center(
+                    child: Container(
+                      color: Colors.white,
+                      padding: const EdgeInsets.all(16),
+                      child: const CircularProgressIndicator()),
+                  )
+                  : Positioned(
+                      bottom: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ButtonCustom(
+                          onPressed: () {
+                            controller.imageDisplay =
+                                MediaQuery.sizeOf(context).width - 20;
+                            controller.saveImage();
+                          },
+                          text: "Xong",
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
       ),

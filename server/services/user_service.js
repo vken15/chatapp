@@ -10,6 +10,7 @@ module.exports = {
     getById,
     create,
     update,
+    updatePhoto,
     updateLastOnline,
     delete: _delete
 };
@@ -68,6 +69,13 @@ async function update(id, params) {
     await user.save();
 
     return omitHash(user.get());
+}
+
+async function updatePhoto(id, url) {
+    const user = await getUser(id);
+    user.photo = url;
+    await user.save();
+    return user;
 }
 
 async function updateLastOnline(id) {

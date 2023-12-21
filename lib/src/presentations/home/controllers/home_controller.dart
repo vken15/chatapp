@@ -1,4 +1,6 @@
-import 'package:chatapp/src/components/show_snack_bar.dart';
+import 'dart:async';
+
+import 'package:chatapp/src/core/utils/show_snack_bar.dart';
 import 'package:chatapp/src/core/enum/app_state.dart';
 import 'package:chatapp/src/data/apiClient/chat/chat_client.dart';
 import 'package:chatapp/src/data/local/dao/chat_dao.dart';
@@ -16,6 +18,7 @@ class HomeController extends GetxController
   RxInt userId = (-1).obs;
   RxList<int> online = <int>[].obs;
   RxBool typing = false.obs;
+  Timer? timer;
 
   Future<void> getUserId() async {
     var uid = await storage.read(key: "userId");
@@ -81,11 +84,13 @@ class HomeController extends GetxController
       socketMethods.initClient(userId.value);
     });
     getChats();
+    timer = Timer.periodic(const Duration(seconds: 60), (Timer t) => getChats());
   }
 
   @override
   void onClose() {
     super.onClose();
+    timer?.cancel();
     _socketMethod.socketClient.dispose();
   }
 }
