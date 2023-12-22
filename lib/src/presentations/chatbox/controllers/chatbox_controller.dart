@@ -6,7 +6,7 @@ import 'package:chatapp/src/data/models/message/received_message.dart';
 import 'package:chatapp/src/data/models/message/send_message.dart';
 import 'package:chatapp/src/data/models/user/user_info.dart';
 import 'package:chatapp/src/data/socket/socket_methods.dart';
-import 'package:chatapp/src/presentations/home/controllers/home_controller.dart';
+import 'package:chatapp/src/presentations/chat/controllers/chat_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -22,10 +22,10 @@ class ChatBoxController extends GetxController
   RxInt offset = 1.obs;
   RxList<ReceivedMessage> messages = <ReceivedMessage>[].obs;
   RxList<ReceivedMessage> msgList = <ReceivedMessage>[].obs;
-  int userId = Get.find<HomeController>().userId.value;
+  int userId = Get.find<ChatController>().userId.value;
   late UserInfo receiver;
   ScrollController scrollController = ScrollController();
-  SocketMethods socketMethods = Get.find<HomeController>().socketMethods;
+  SocketMethods socketMethods = Get.find<ChatController>().socketMethods;
 
   void sendMessage(String content, int chatId, int receiverId, int senderId) {
     if (content.isNotEmpty) {
@@ -41,12 +41,12 @@ class ChatBoxController extends GetxController
         socketMethods.sendStopTypingEvent(id.value);
         messageController.value.clear();
         messages.insert(0, response[1]);
-        Get.find<HomeController>().chatList.forEach((chat) {
+        Get.find<ChatController>().chatList.forEach((chat) {
           if (chat.id == response[1].chatId) {
             chat.latestMessage = response[1];
           }
         });
-        Get.find<HomeController>().chatList.refresh();
+        Get.find<ChatController>().chatList.refresh();
       }).catchError((e) {
         ShowSnackBar.showSnackBar("Không thể gửi tin nhắn");
       });
@@ -127,8 +127,8 @@ class ChatBoxController extends GetxController
   }
 
   String lastOnlineCalc(String time) {
-    List<int> onlineList = Get.find<HomeController>().online;
-    if (onlineList.contains(id.value)) {
+    List<int> onlineList = Get.find<ChatController>().online;
+    if (onlineList.contains(receiver.id)) {
       return "Đang hoạt động";
     } else {
       DateTime now = DateTime.now();

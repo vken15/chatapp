@@ -12,7 +12,7 @@ class UserClient extends BaseClient {
       {required String imageName, required Uint8List encodedImage}) async {
     const storage = FlutterSecureStorage();
     var token = await storage.read(key: "UserToken");
-    var url = "${AppEndpoint.APP_URL}${AppEndpoint.USER_PHOTO_URL}";
+    var url = "${AppEndpoint.APP_URL}${AppEndpoint.USER_UPLOAD_PHOTO_URL}";
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'

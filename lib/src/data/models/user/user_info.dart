@@ -7,6 +7,7 @@ class UserInfo {
   String? username;
   String? photo;
   String? lastOnline;
+  bool photoStored = false;
 
   UserInfo(
       {
@@ -18,6 +19,7 @@ class UserInfo {
       this.username,
       this.photo,
       this.lastOnline,
+      this.photoStored = false,
       });
 
   UserInfo.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class UserInfo {
     username = json['username'];
     photo = json['photo'];
     lastOnline = json['lastOnline'];
+    photoStored = json['photoStored'] ?? photoStored;
   }
 
   Map<String, dynamic> toJson() {
@@ -42,6 +45,7 @@ class UserInfo {
     data['username'] = username;
     data['photo'] = photo;
     data['lastOnline'] = lastOnline;
+    data['photoStored'] = photoStored;
     return data;
   }
 }

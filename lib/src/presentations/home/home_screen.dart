@@ -1,97 +1,81 @@
-import 'package:chatapp/src/core/enum/app_state.dart';
+import 'package:chatapp/src/presentations/chat/chat_screen.dart';
+import 'package:chatapp/src/presentations/phonebook/phonebook_screen.dart';
+import 'package:chatapp/src/presentations/profile/profile_screen.dart';
 import 'package:chatapp/src/presentations/home/controllers/home_controller.dart';
 import 'package:chatapp/src/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomeScreen extends GetWidget<HomeController> {
-  const HomeScreen({super.key});
+class AppTabBar extends GetWidget<HomeController> {
+  const AppTabBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Obx(() {
-        if (controller.screenState.value == AppState.loading) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (controller.screenState.value == AppState.error) {
-          return const Center(child: Text("Error"));
-        } else if (controller.screenState.value == AppState.empty) {
-          return const Center(child: Text("No chat avaliable"));
-        } else {
-          return _buildChatList();
-        }
-      }),
-    );
-  }
-
-  ListView _buildChatList() {
-    return ListView.builder(
-        itemCount: controller.chatList.length,
-        itemBuilder: (context, index) {
-          var receiver = controller.chatList[index].users
-              ?.firstWhere((user) => user.id != controller.userId.value);
-          var chatName = controller.chatList[index].chatName!.isEmpty
-              ? receiver?.fullName ?? ""
-              : controller.chatList[index].chatName;
-          return InkWell(
-            onTap: () {
-              Get.toNamed(AppRouter.chatboxScreen, arguments: {
-                'title': chatName,
-                'id': controller.chatList[index].id!,
-                'photo': "",
-                'receiver': receiver,
-              });
-            },
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              child: ListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 4),
-                minLeadingWidth: 0,
-                minVerticalPadding: 0,
-                leading: Stack(
-                  alignment: Alignment.bottomLeft,
-                  children: [
-                    const CircleAvatar(
-                      radius: 20,
-                      //backgroundImage: ,
-                    ),
-                    Positioned(
-                      right: 3,
-                      child: CircleAvatar(
-                        radius: 5,
-                        backgroundColor:
-                            controller.online.contains(receiver?.id)
-                                ? Colors.green
-                                : Colors.grey,
-                      ),
-                    )
-                  ],
+    return Obx(
+      () => Scaffold(
+        appBar: AppBar(
+          leading: controller.isSearch.value
+              ? IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white,),
+                  onPressed: () {
+                    controller.isSearch.value = false;
+                  },
+                )
+              : IconButton(
+                  icon: const Icon(Icons.search, color: Colors.white,),
+                  onPressed: () {
+                    controller.isSearch.value = true;
+                    controller.searchTextFocus.requestFocus();
+                  },
                 ),
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(chatName!),
-                    Text(
-                      controller.chatList[index].latestMessage?.content ??
-                          "Không có tin nhắn nào",
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                  ],
-                ),
-                trailing: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(controller.chatList[index].latestMessage == null
-                        ? ""
-                        : controller.msgTime(controller
-                            .chatList[index].latestMessage!.updatedAt
-                            .toString())),
-                    //Text(controller.chatList[index].latestMessage!.content),
-                  ],
-                ),
-              ),
+          title: TextFormField(
+              controller: controller.searchContent.value,
+              focusNode: controller.searchTextFocus,
+              onTap: () {
+                controller.isSearch.value = true;
+              },
+              onTapOutside: (event) {
+                if (controller.searchTextFocus.hasFocus == true) {
+                  controller.searchTextFocus.unfocus();
+                  //controller.isSearch.value = false;
+                }
+              }),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.settings, color: Colors.white,),
+              onPressed: () {
+                Get.toNamed(AppRouter.settingScreen);
+              },
             ),
-          );
-        });
+          ],
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                  colors: [Color.fromARGB(255, 2, 96, 237), Colors.lightBlue]),
+            ),
+          ),
+        ),
+        body: controller.isSearch.value
+            ? const Center()
+            : TabBarView(
+                controller: controller.tabController,
+                children: const [
+                  HomeScreen(),
+                  PhoneBookScreen(),
+                  ProfileScreen(),
+                ],
+              ),
+        bottomNavigationBar: TabBar(
+          controller: controller.tabController,
+          tabs: controller.tabs,
+          indicatorColor: Colors.white,
+          onTap: (value) {
+            //controller.isSearch.value = false;
+          },
+        ),
+      ),
+    );
   }
 }

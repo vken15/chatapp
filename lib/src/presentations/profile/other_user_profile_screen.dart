@@ -6,8 +6,9 @@ import 'package:chatapp/src/presentations/profile/controllers/profile_controller
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ProfileScreen extends GetWidget<ProfileController> {
-  const ProfileScreen({super.key});
+//TODO: 
+class OtherProfileScreen extends GetWidget<ProfileController> {
+  const OtherProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

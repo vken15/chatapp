@@ -34,8 +34,8 @@ class ChangePhotoScreen extends GetWidget<ChangePhotoController> {
                     width: double.infinity,
                     color: Colors.white,
                     padding: const EdgeInsets.all(8),
-                    child: const Text(
-                      "Bạn có thể di chuyển hoặc zoom ảnh",
+                    child: const Text(//Bạn có thể di chuyển hoặc zoom ảnh
+                      "Bạn có thể di chuyển ảnh",
                       textAlign: TextAlign.center,
                     ),
                   ),

@@ -17,10 +17,12 @@ class ChangePhotoController extends GetxController {
   final storage = const FlutterSecureStorage();
   Rx<File?> selectedImage = File('').obs;
   Rx<double> scale = 1.0.obs;
-  Rx<double?> previousScale = null.obs;
+  Rx<double> previousScale = (-1.0).obs;
   ScrollController scrollController = ScrollController();
   Rx<AppState> screenState = AppState.initial.obs;
   double imageDisplay = 0;
+  img.Image? image;
+  RxBool scrollVertical = true.obs;
 
   void saveImage() async {
     // khởi tạo biến và tìm thư mục để lưu trữ
@@ -30,56 +32,88 @@ class ChangePhotoController extends GetxController {
     var uid = await storage.read(key: "userId");
     var userDao = UserDao();
     final user = await userDao.getById(int.parse(uid!));
-    Uint8List bytes = selectedImage.value!.readAsBytesSync();
-    img.Image? image = img.decodeImage(bytes);
+    Uint8List bytes = File(selectedImage.value!.path).readAsBytesSync();
+    image = img.decodeImage(bytes);
+
+    // resize
+    await resizeImage();
 
     // tính toán và cắt ảnh
-    // TODO: Thêm trường hợp cắt ảnh
+    double muti = image!.height /
+        (imageDisplay + scrollController.position.maxScrollExtent);
     int size = (image!.width).round();
     int x = 0;
-    double muti = image.height /
-        (imageDisplay + scrollController.position.maxScrollExtent);
-    int y = (scrollController.position.pixels * muti).round();
-    image = img.copyCrop(image, x: x, y: y, width: size, height: size);
-
-    // xóa file ảnh cũ nếu tồn tại
-    if (user.photo != null) {
-      File(user.photo!).delete();
+    int y = 0;
+    if (image!.width < image!.height) {
+      y = (scrollController.position.pixels * muti).round();
+    } else {
+      x = (scrollController.position.pixels * muti).round();
     }
-
-    // lưu file ảnh mới
-    final savePath =
-        '$path/${uid}_$x${y}_${basename(selectedImage.value!.path)}';
-    final encodedImage =
-        img.encodeNamedImage(selectedImage.value!.path, image)!;
-    File(savePath).writeAsBytesSync(encodedImage);
-    user.photo = savePath;
-    Get.find<ProfileController>().user.value.photo = savePath;
-    await userDao.insertOrUpdate(user);
+    image = img.copyCrop(image!, x: x, y: y, width: size, height: size);
 
     // print("${image.width} : $x");
     // print(muti);
     // print("${image.height} : $y");
     // print(imageDisplay);
     // print(savePath);
-    
+
+    // xóa file ảnh cũ nếu tồn tại
+    if (user.photo != null) {
+      File(user.photo!).delete();
+      File(selectedImage.value!.path).delete();
+    }
+
+    // lưu file ảnh mới
+    final savePath =
+        '$path/${uid}_$x${y}_${basename(selectedImage.value!.path)}';
+    final encodedImage =
+        img.encodeNamedImage(selectedImage.value!.path, image!)!;
+    File(savePath).writeAsBytesSync(encodedImage);
+    user.photo = savePath;
+    Get.find<ProfileController>().user.value.photo = savePath;
+    await userDao.insertOrUpdate(user);
+
     // Gửi ảnh mới lên server
     try {
       var client = UserClient();
       client.updateUserProfile(
-          imageName: '${uid}_$x${y}_${basenameWithoutExtension(selectedImage.value!.path)}',
+          imageName:
+              '${uid}_$x${y}_${basenameWithoutExtension(selectedImage.value!.path)}',
           encodedImage: encodedImage);
     } catch (e) {
       print(e);
     }
 
-    Get.offAndToNamed(AppRouter.tabScreen);
+    Get.offAndToNamed(AppRouter.homeScreen);
+  }
+
+  resizeImage() async {
+    final appDocumentDir = await getApplicationDocumentsDirectory();
+    final String path = appDocumentDir.path;
+    Uint8List bytes = File(selectedImage.value!.path).readAsBytesSync();
+    image = img.decodeImage(bytes);
+    int resize = Get.width.toInt() - 20;
+    if (image!.width < image!.height) {
+      image = img.copyResize(image!, width: resize);
+    } else {
+      image = img.copyResize(image!, height: resize);
+    }
+    final savePath =
+        '$path/${resize}x${resize}_${basename(selectedImage.value!.path)}';
+    final encodedImage =
+        img.encodeNamedImage(selectedImage.value!.path, image!)!;
+    File(savePath).writeAsBytesSync(encodedImage);
+    selectedImage(File(savePath));
   }
 
   @override
   void onInit() {
     Map<String, dynamic> args = Get.arguments;
-    selectedImage.value = File(args['image'].toString());
+    selectedImage(File(args['image'].toString()));
+    Uint8List bytes = File(selectedImage.value!.path).readAsBytesSync();
+    image = img.decodeImage(bytes);
+    if (image!.width > image!.height) scrollVertical(false);
+    //await resizeImage();
     super.onInit();
   }
 }

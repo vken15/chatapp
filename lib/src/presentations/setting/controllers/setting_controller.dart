@@ -13,6 +13,6 @@ class SettingController extends GetxController {
     await UserDao().deleteAll();
     await ChatDao().deleteAll();
     await MessageDao().deleteAll();
-    Get.offAndToNamed(AppRouter.loginScreen);
+    Get.offAllNamed(AppRouter.loginScreen);
   }
 }

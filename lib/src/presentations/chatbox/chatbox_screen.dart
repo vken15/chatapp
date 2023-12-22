@@ -2,7 +2,7 @@ import 'package:chat_bubbles/bubbles/bubble_special_three.dart';
 import 'package:chatapp/src/components/message_textfield.dart';
 import 'package:chatapp/src/core/enum/app_state.dart';
 import 'package:chatapp/src/presentations/chatbox/controllers/chatbox_controller.dart';
-import 'package:chatapp/src/presentations/home/controllers/home_controller.dart';
+import 'package:chatapp/src/presentations/chat/controllers/chat_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -77,7 +77,7 @@ class ChatBoxScreen extends GetWidget<ChatBoxController> {
         } else {
           return Column(
             children: [
-              Text(Get.find<HomeController>()
+              Text(Get.find<ChatController>()
                   .msgTime(controller.messages[index].updatedAt.toString())),
               BubbleSpecialThree(
                 text: controller.messages[index].content!,

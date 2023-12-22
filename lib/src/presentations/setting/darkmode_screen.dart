@@ -1,8 +1,7 @@
-import 'package:chatapp/src/presentations/setting/controllers/darkMode_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class DarkModeSettingScreen extends GetWidget<DarkModeSettingController> {
+class DarkModeSettingScreen extends StatelessWidget {
   const DarkModeSettingScreen({super.key});
 
   @override
@@ -14,44 +13,41 @@ class DarkModeSettingScreen extends GetWidget<DarkModeSettingController> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      body: Obx(
-        () => Column(
-          children: [
-            ListTile(
-              title: const Text("Bật"),
-              trailing: Radio<ThemeMode>(
-                value: ThemeMode.dark,
-                groupValue: controller.dartMode.value,
-                onChanged: (ThemeMode? value) {
-                  controller.dartMode.value = value;
-                  Get.changeThemeMode(ThemeMode.dark);
-                },
-              ),
+      body: Column(
+        children: [
+          InkWell(
+            onTap: () {
+              Get.changeThemeMode(ThemeMode.dark);
+            },
+            child: const ListTile(
+              title: Text("Bật"),
             ),
-            ListTile(
-              title: const Text("Tắt"),
-              trailing: Radio<ThemeMode>(
-                value: ThemeMode.light,
-                groupValue: controller.dartMode.value,
-                onChanged: (ThemeMode? value) {
-                  controller.dartMode.value = value;
-                  Get.changeThemeMode(ThemeMode.light);
-                },
-              ),
+          ),
+          InkWell(
+            onTap: () {
+              Get.changeThemeMode(ThemeMode.light);
+            },
+            child: const ListTile(
+              title: Text("Tắt"),
             ),
-            ListTile(
-              title: const Text("Mặc định của hệ thống"),
-              trailing: Radio<ThemeMode>(
-                value: ThemeMode.system,
-                groupValue: controller.dartMode.value,
-                onChanged: (ThemeMode? value) {
-                  controller.dartMode.value = value;
-                  Get.changeThemeMode(ThemeMode.system);
-                },
-              ),
+          ),
+          InkWell(
+            onTap: () {
+              Get.changeThemeMode(ThemeMode.system);
+            },
+            child: const ListTile(
+              title: Text("Mặc định của hệ thống"),
+              // trailing: Radio<ThemeMode>(
+              //   value: ThemeMode.system,
+              //   groupValue: controller.dartMode.value,
+              //   onChanged: (ThemeMode? value) {
+              //     controller.dartMode.value = value;
+              //     Get.changeThemeMode(ThemeMode.system);
+              //   },
+              // ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

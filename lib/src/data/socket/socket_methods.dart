@@ -1,7 +1,7 @@
 import 'package:chatapp/src/data/models/message/received_message.dart';
 import 'package:chatapp/src/data/socket/socket_client.dart';
 import 'package:chatapp/src/presentations/chatbox/controllers/chatbox_controller.dart';
-import 'package:chatapp/src/presentations/home/controllers/home_controller.dart';
+import 'package:chatapp/src/presentations/chat/controllers/chat_controller.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -19,32 +19,32 @@ class SocketMethods {
     });
 
     _socketClient.on('online-user-list', (users) {
-      Get.find<HomeController>().online.addAll(users.cast<int>());
-      Get.find<HomeController>().chatList.refresh();
+      Get.find<ChatController>().online.addAll(users.cast<int>());
+      Get.find<ChatController>().chatList.refresh();
     });
 
     _socketClient.on('online-user', (userId) {
-      var i = Get.find<HomeController>().online.indexOf(userId);
+      var i = Get.find<ChatController>().online.indexOf(userId);
       if (i < 0) {
-        Get.find<HomeController>().online.add(userId);
+        Get.find<ChatController>().online.add(userId);
       }
-      Get.find<HomeController>().chatList.refresh();
+      Get.find<ChatController>().chatList.refresh();
     });
 
     _socketClient.on('offline-user', (userId) {
-      var i = Get.find<HomeController>().online.indexOf(userId);
+      var i = Get.find<ChatController>().online.indexOf(userId);
       if (i >= 0) {
-        Get.find<HomeController>().online.remove(userId);
+        Get.find<ChatController>().online.remove(userId);
       }
-      Get.find<HomeController>().chatList.refresh();
+      Get.find<ChatController>().chatList.refresh();
     });
 
     _socketClient.on('typing', (status) {
-      Get.find<HomeController>().typing.value = true;
+      Get.find<ChatController>().typing.value = true;
     });
 
     _socketClient.on('not typing', (status) {
-      Get.find<HomeController>().typing.value = false;
+      Get.find<ChatController>().typing.value = false;
     });
 
     _socketClient.on('message received', (newMessageReceived) {
@@ -52,12 +52,12 @@ class SocketMethods {
           ReceivedMessage.fromJson(newMessageReceived);
       sendStopTypingEvent(receivedMessage.chatId!);
       if (receivedMessage.senderId != userId) {
-        Get.find<HomeController>().chatList.forEach((chat) {
+        Get.find<ChatController>().chatList.forEach((chat) {
           if (chat.id == receivedMessage.chatId) {
             chat.latestMessage = receivedMessage;
           }
         });
-        Get.find<HomeController>().chatList.refresh();
+        Get.find<ChatController>().chatList.refresh();
         try {
           Get.find<ChatBoxController>().messages.insert(0, receivedMessage);
         } catch (e) {

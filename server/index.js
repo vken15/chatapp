@@ -2,6 +2,7 @@ const { Socket } = require("socket.io");
 const app = require("./app");
 const _ = require("lodash");
 //const http = require("http");
+const userService = require('services/user_service');
 
 const port = process.env.PORT || 3000;
 

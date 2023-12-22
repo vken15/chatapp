@@ -34,7 +34,7 @@ class AuthController extends GetxController {
           await storage.write(key: "userId", value: response.id.toString());
           var userDao = UserDao();
           await userDao.insertOrUpdate(response);
-          Get.offAndToNamed(AppRouter.tabScreen);
+          Get.offAndToNamed(AppRouter.homeScreen);
           status(LoginStatus.success);
         } else {
           status(LoginStatus.faild);

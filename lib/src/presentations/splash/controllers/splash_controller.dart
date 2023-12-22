@@ -12,13 +12,13 @@ class SplashController extends GetxController {
     if (token == null) {
       Get.offAndToNamed(AppRouter.loginScreen);
     } else {
-      Get.offAndToNamed(AppRouter.tabScreen);
+      Get.offAndToNamed(AppRouter.homeScreen);
     }
   }
 
   @override
-  void onReady() {
+  Future<void> onReady() async {
     super.onReady();
-    getToken();
+    await getToken();
   }
 }
