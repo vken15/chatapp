@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:chatapp/src/core/constants/app_url.dart';
-import 'package:chatapp/src/presentations/chat/controllers/chat_controller.dart';
+import 'package:chatapp/src/presentations/phonebook/controllers/phonebook_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class PhoneBookScreen extends GetWidget<ChatController> {
+class PhoneBookScreen extends GetWidget<PhoneBookController> {
   const PhoneBookScreen({super.key});
 
   @override
@@ -57,10 +57,8 @@ class PhoneBookScreen extends GetWidget<ChatController> {
               child: ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: controller.chatList.length,
+                itemCount: controller.friendList.length,
                 itemBuilder: (context, index) {
-                  var receiver = controller.chatList[index].users?.firstWhere(
-                      (user) => user.id != controller.userId.value);
                   return InkWell(
                     onTap: () {},
                     child: ListTile(
@@ -70,15 +68,15 @@ class PhoneBookScreen extends GetWidget<ChatController> {
                       minVerticalPadding: 0,
                       leading: CircleAvatar(
                         radius: 20,
-                        backgroundImage: receiver!.photo == null
+                        backgroundImage: controller.friendList[index].photo == null
                           ? null
-                          : receiver.photoStored == true
-                              ? FileImage(File(receiver.photo!))
+                          : controller.friendList[index].photoStored == true
+                              ? FileImage(File(controller.friendList[index].photo!))
                                   as ImageProvider<Object>
                               : NetworkImage(
-                                  "${AppEndpoint.APP_URL}${AppEndpoint.USER_PHOTO_URL}/${receiver.photo!}.png"),
+                                  "${AppEndpoint.APP_URL}${AppEndpoint.USER_PHOTO_URL}/${controller.friendList[index].photo!}.png"),
                       ),
-                      title: Text(receiver.fullName!),
+                      title: Text(controller.friendList[index].fullName!),
                     ),
                   );
                 },

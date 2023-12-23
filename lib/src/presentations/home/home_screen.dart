@@ -11,70 +11,57 @@ class AppTabBar extends GetWidget<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Scaffold(
-        appBar: AppBar(
-          leading: controller.isSearch.value
-              ? IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.white,),
-                  onPressed: () {
-                    controller.isSearch.value = false;
-                  },
-                )
-              : IconButton(
-                  icon: const Icon(Icons.search, color: Colors.white,),
-                  onPressed: () {
-                    controller.isSearch.value = true;
-                    controller.searchTextFocus.requestFocus();
-                  },
+    return Scaffold(
+      appBar: AppBar(
+        title: GestureDetector(
+            onTap: () {
+              Get.toNamed(AppRouter.searchScreen);
+            },
+            child: const Row(
+              children: [
+                Icon(
+                  Icons.search,
+                  color: Colors.white,
                 ),
-          title: TextFormField(
-              controller: controller.searchContent.value,
-              focusNode: controller.searchTextFocus,
-              onTap: () {
-                controller.isSearch.value = true;
-              },
-              onTapOutside: (event) {
-                if (controller.searchTextFocus.hasFocus == true) {
-                  controller.searchTextFocus.unfocus();
-                  //controller.isSearch.value = false;
-                }
-              }),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.settings, color: Colors.white,),
-              onPressed: () {
-                Get.toNamed(AppRouter.settingScreen);
-              },
+                SizedBox(width: 8),
+                Text(
+                  "Tìm kiếm",
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                )
+              ],
+            )),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.settings,
+              color: Colors.white,
             ),
-          ],
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                  colors: [Color.fromARGB(255, 2, 96, 237), Colors.lightBlue]),
-            ),
+            onPressed: () {
+              Get.toNamed(AppRouter.settingScreen);
+            },
+          ),
+        ],
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                colors: [Color.fromARGB(255, 2, 96, 237), Colors.lightBlue]),
           ),
         ),
-        body: controller.isSearch.value
-            ? const Center()
-            : TabBarView(
-                controller: controller.tabController,
-                children: const [
-                  HomeScreen(),
-                  PhoneBookScreen(),
-                  ProfileScreen(),
-                ],
-              ),
-        bottomNavigationBar: TabBar(
-          controller: controller.tabController,
-          tabs: controller.tabs,
-          indicatorColor: Colors.white,
-          onTap: (value) {
-            //controller.isSearch.value = false;
-          },
-        ),
+      ),
+      body: TabBarView(
+        controller: controller.tabController,
+        children: const [
+          HomeScreen(),
+          PhoneBookScreen(),
+          ProfileScreen(),
+        ],
+      ),
+      bottomNavigationBar: TabBar(
+        controller: controller.tabController,
+        tabs: controller.tabs,
+        indicatorColor: Colors.white,
       ),
     );
   }

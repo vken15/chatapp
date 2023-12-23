@@ -3,10 +3,13 @@ import 'package:chatapp/src/presentations/auth/bindings/auth_bindings.dart';
 import 'package:chatapp/src/presentations/auth/login_screen.dart';
 import 'package:chatapp/src/presentations/chatbox/bindings/chatbox_binding.dart';
 import 'package:chatapp/src/presentations/chatbox/chatbox_screen.dart';
+import 'package:chatapp/src/presentations/phonebook/bindings/phonebook_binding.dart';
 import 'package:chatapp/src/presentations/profile/bindings/change_photo_bindings.dart';
 import 'package:chatapp/src/presentations/profile/change_photo_screen.dart';
 import 'package:chatapp/src/presentations/register/bindings/register_bindings.dart';
 import 'package:chatapp/src/presentations/register/register_screen.dart';
+import 'package:chatapp/src/presentations/search/bindings/search_bindings.dart';
+import 'package:chatapp/src/presentations/search/search_screen.dart';
 import 'package:chatapp/src/presentations/setting/bindings/setting_bindings.dart';
 import 'package:chatapp/src/presentations/setting/darkmode_screen.dart';
 import 'package:chatapp/src/presentations/setting/setting_screen.dart';
@@ -21,6 +24,7 @@ class AppRouter {
   static const loginScreen = "/login";
   static const registerScreen = "/register";
   static const homeScreen = "/home";
+  static const searchScreen = "/search";
   //static const chatScreen = "/chat";
   //static const profileScreen = "/profile";
   static const changePhotoScreen = "/profile-photo";
@@ -39,7 +43,11 @@ class AppRouter {
     ]),
     GetPage(name: homeScreen, page: () => const AppTabBar(), bindings: [
       HomeBindings(),
+      PhoneBookBindings(),
     ]),
+    GetPage(name: searchScreen, page: () => const SearchScreen(), bindings: [
+      SearchBindings(),
+    ], transition: Transition.noTransition),
     GetPage(name: changePhotoScreen, page: () => const ChangePhotoScreen(), bindings: [
       ChangePhotoBindings(),
     ]),

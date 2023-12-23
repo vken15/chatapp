@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController
     with GetSingleTickerProviderStateMixin {
-  final storage = const FlutterSecureStorage();
-  Rx<bool> isSearch = false.obs;
-  Rx<TextEditingController> searchContent = Rx(TextEditingController());
-
-  final FocusNode searchTextFocus = FocusNode();
 
   final List<Tab> tabs = <Tab>[
     const Tab(icon: Icon(Icons.chat_outlined), iconMargin: EdgeInsets.zero,),

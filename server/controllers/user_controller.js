@@ -12,6 +12,7 @@ router.post('/authenticate', authenticateSchema, authenticate);
 router.post('/register', registerSchema, register);
 router.post('/upload', authorize(), updatePhoto);
 router.post('/download', authorize(), getPhoto);
+router.post('/search', authorize(), getByName);
 router.get('/', authorize(), getAll);
 router.get('/current', authorize(), getCurrent);
 router.get('/:id', authorize(), getById);
@@ -62,6 +63,12 @@ function getCurrent(req, res, next) {
 function getById(req, res, next) {
     userService.getById(req.params.id)
         .then(user => res.json(user))
+        .catch(next);
+}
+
+function getByName(req, res, next) {
+    userService.getByName(req.body.searchValue)
+        .then(userList => res.json(userList))
         .catch(next);
 }
 

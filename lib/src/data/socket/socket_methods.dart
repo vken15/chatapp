@@ -65,6 +65,9 @@ class SocketMethods {
         }
       }
     });
+
+    //TODO:
+    _socketClient.on('accept friend', (data) {});
   }
 
   //emits
@@ -82,6 +85,11 @@ class SocketMethods {
 
   void joinChat(List<int> listId) {
     _socketClient.emit('join chat', listId);
+  }
+
+  //TODO:
+  void sendFriendRequest(int senderId, int receiverId) {
+    _socketClient.emit('friend request', {senderId, receiverId});
   }
 
   // void updateProfilePhoto(int id,Uint8List encodedImage) {

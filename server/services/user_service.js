@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const { Op } = require("sequelize");
 
 const { secret } = require('config.json');
 const db = require('_helpers/db');
@@ -8,6 +9,7 @@ module.exports = {
     authenticate,
     getAll,
     getById,
+    getByName,
     create,
     update,
     updatePhoto,
@@ -33,6 +35,10 @@ async function getAll() {
 
 async function getById(id) {
     return await getUser(id);
+}
+
+async function getByName(searchValue) {
+    return await db.User.findAll({ where: { fullname: {[Op.like]: `%${searchValue}%`}}, });
 }
 
 async function create(params) {

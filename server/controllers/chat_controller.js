@@ -33,13 +33,9 @@ function accessChat(req, res, next) {
                 users: [
                     {
                         id: parseInt(req.body.userId),
-                        User_Chats: {
-                        }
                     },
                     {
                         id: parseInt(req.auth.sub),
-                        User_Chats: {
-                        }
                     }
                 ]
             };
