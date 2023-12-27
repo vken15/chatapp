@@ -34,7 +34,6 @@ async function getByTwoUserId(id, userId) {
             include: {model: db.User, where: {id: id}},
         },
         where: {id: userId}});
-        console.log(chat.Chats[0] == undefined);
     if (chat.Chats[0] == undefined) {
         return null;
     } else {

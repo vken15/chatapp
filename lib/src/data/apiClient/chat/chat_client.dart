@@ -4,17 +4,16 @@ import 'package:chatapp/src/core/constants/app_url.dart';
 import 'package:chatapp/src/data/apiClient/base_client.dart';
 import 'package:chatapp/src/data/models/chat/create_chat.dart';
 import 'package:chatapp/src/data/models/chat/get_chat.dart';
-import 'package:chatapp/src/data/models/chat/initial_chat.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class ChatClient extends BaseClient {
 
   ///
-  Future<List<dynamic>> accessChat(CreateChat model) async {
+  Future<GetChats> accessChat(CreateChat model) async {
     const storage = FlutterSecureStorage();
     var token = await storage.read(key: "UserToken");
-    var url = "${AppEndpoint.APP_URL}${AppEndpoint.CHAT_URL}";
+    var url = "${AppEndpoint.APP_URL}${AppEndpoint.CHAT_API}";
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'
@@ -26,11 +25,9 @@ class ChatClient extends BaseClient {
     );
 
     if (response.statusCode == 200) {
-      var chatId = InitialChat.fromJson(jsonDecode(response.body)).id;
-
-      return [true, chatId];
+      return GetChats.fromJson2(jsonDecode(response.body));
     } else {
-      return [false];
+      throw Exception("Failded to access chat");
     }
   }
 
@@ -38,7 +35,7 @@ class ChatClient extends BaseClient {
   Future<List<GetChats>> getConversations() async {
     const storage = FlutterSecureStorage();
     var token = await storage.read(key: "UserToken");
-    var url = "${AppEndpoint.APP_URL}${AppEndpoint.CHAT_URL}";
+    var url = "${AppEndpoint.APP_URL}${AppEndpoint.CHAT_API}";
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'

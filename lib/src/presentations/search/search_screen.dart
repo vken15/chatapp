@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chatapp/src/core/constants/app_url.dart';
 import 'package:chatapp/src/presentations/search/controllers/search_controller.dart';
+import 'package:chatapp/src/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -54,8 +55,13 @@ class SearchScreen extends GetWidget<SearchScreenController> {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: controller.result.length,
           itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () {},
+            return controller.result[index].id != controller.userId.value ? InkWell(
+              onTap: () {
+                Get.toNamed(AppRouter.otherProfileScreen, 
+                arguments: {
+                  'user': controller.result[index],
+                });
+              },
               child: ListTile(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                 minLeadingWidth: 0,
@@ -68,11 +74,11 @@ class SearchScreen extends GetWidget<SearchScreenController> {
                           ? FileImage(File(controller.result[index].photo!))
                               as ImageProvider<Object>
                           : NetworkImage(
-                              "${AppEndpoint.APP_URL}${AppEndpoint.USER_PHOTO_URL}/${controller.result[index].photo!}.png"),
+                              "${AppEndpoint.APP_URL}${AppEndpoint.USER_PHOTO_API}/${controller.result[index].photo!}.png"),
                 ),
                 title: Text(controller.result[index].fullName!),
               ),
-            );
+            ) : const SizedBox();
           },
         ),
       ),

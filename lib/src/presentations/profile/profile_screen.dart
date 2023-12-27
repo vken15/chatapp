@@ -34,7 +34,7 @@ class ProfileScreen extends GetWidget<ProfileController> {
                                           File(controller.user.value.photo!))
                                       as ImageProvider<Object>
                                   : NetworkImage(
-                                      "${AppEndpoint.APP_URL}${AppEndpoint.USER_PHOTO_URL}/${controller.user.value.photo}.png"),
+                                      "${AppEndpoint.APP_URL}${AppEndpoint.USER_PHOTO_API}/${controller.user.value.photo}.png"),
                         ),
                       ),
                       Text(
@@ -54,7 +54,7 @@ class ProfileScreen extends GetWidget<ProfileController> {
                           ? FileImage(File(controller.user.value.photo!))
                               as ImageProvider<Object>
                           : NetworkImage(
-                              "${AppEndpoint.APP_URL}${AppEndpoint.USER_PHOTO_URL}/${controller.user.value.photo}.png"),
+                              "${AppEndpoint.APP_URL}${AppEndpoint.USER_PHOTO_API}/${controller.user.value.photo}.png"),
                   onAvatarTap: () {
                     controller.pickImage();
                   }),

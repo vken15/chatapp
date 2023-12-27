@@ -13,7 +13,7 @@ class MessageClient extends BaseClient {
   Future<List<dynamic>> sendMessage(SendMessage model) async {
     const storage = FlutterSecureStorage();
     var token = await storage.read(key: "UserToken");
-    var url = "${AppEndpoint.APP_URL}${AppEndpoint.MESSAGE_URL}";
+    var url = "${AppEndpoint.APP_URL}${AppEndpoint.MESSAGE_API}";
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'
@@ -38,7 +38,7 @@ class MessageClient extends BaseClient {
   Future<List<ReceivedMessage>> getMessages(int chatId, int offset) async {
     const storage = FlutterSecureStorage();
     var token = await storage.read(key: "UserToken");
-    var url = "${AppEndpoint.APP_URL}${AppEndpoint.MESSAGE_URL}/$chatId?page=$offset";
+    var url = "${AppEndpoint.APP_URL}${AppEndpoint.MESSAGE_API}/$chatId?page=$offset";
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'

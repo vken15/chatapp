@@ -21,10 +21,10 @@ class ChatBoxScreen extends GetWidget<ChatBoxController> {
               ),
               children: [
                 TextSpan(
-                    text: controller.receiver.lastOnline == null
+                    text: controller.receiver.value.lastOnline == null
                         ? ""
                         : controller.lastOnlineCalc(
-                            controller.receiver.lastOnline!),
+                            controller.receiver.value.lastOnline!),
                     style: const TextStyle(fontSize: 15, color: Colors.grey))
               ]),
         ),
@@ -104,7 +104,7 @@ class ChatBoxScreen extends GetWidget<ChatBoxController> {
             controller.sendMessage(
                 controller.messageController.value.text,
                 controller.id.value,
-                controller.receiver.id!,
+                controller.receiver.value.id!,
                 controller.userId);
           },
           child: const Icon(
@@ -115,7 +115,7 @@ class ChatBoxScreen extends GetWidget<ChatBoxController> {
         ),
         onSubmitted: (value) {
           controller.sendMessage(value, controller.id.value,
-              controller.receiver.id!, controller.userId);
+              controller.receiver.value.id!, controller.userId);
         },
         onChanged: (value) {
           controller.startTyping();

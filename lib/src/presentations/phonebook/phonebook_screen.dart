@@ -74,7 +74,7 @@ class PhoneBookScreen extends GetWidget<PhoneBookController> {
                               ? FileImage(File(controller.friendList[index].photo!))
                                   as ImageProvider<Object>
                               : NetworkImage(
-                                  "${AppEndpoint.APP_URL}${AppEndpoint.USER_PHOTO_URL}/${controller.friendList[index].photo!}.png"),
+                                  "${AppEndpoint.APP_URL}${AppEndpoint.USER_PHOTO_API}/${controller.friendList[index].photo!}.png"),
                       ),
                       title: Text(controller.friendList[index].fullName!),
                     ),

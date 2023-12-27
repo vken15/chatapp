@@ -4,8 +4,7 @@ module.exports = model;
 
 function model(sequelize) {
     const attributes = {
-        content: { type: DataTypes.STRING, allowNull: false },
-        status: { type: DataTypes.INTEGER, allowNull: true},
+        status: { type: DataTypes.INTEGER, allowNull: false },
     };
 
     const options = {
@@ -19,5 +18,5 @@ function model(sequelize) {
         }
     };
 
-    return sequelize.define('Message', attributes, options);
+    return sequelize.define('Friend', attributes, options);
 }

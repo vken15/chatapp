@@ -62,7 +62,7 @@ class HomeScreen extends GetWidget<ChatController> {
                               ? FileImage(File(receiver.photo!))
                                   as ImageProvider<Object>
                               : NetworkImage(
-                                  "${AppEndpoint.APP_URL}${AppEndpoint.USER_PHOTO_URL}/${receiver.photo!}.png"),
+                                  "${AppEndpoint.APP_URL}${AppEndpoint.USER_PHOTO_API}/${receiver.photo!}.png"),
                     ),
                     Positioned(
                       right: 3,

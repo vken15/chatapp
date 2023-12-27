@@ -9,6 +9,7 @@ class SearchScreenController extends GetxController {
   Rx<bool> isSearch = false.obs;
   Rx<TextEditingController> searchContent = Rx(TextEditingController());
   RxList<UserInfo> result = <UserInfo>[].obs;
+  RxInt userId = 0.obs;
   final FocusNode searchTextFocus = FocusNode();
 
   Future search() async {
@@ -25,9 +26,15 @@ class SearchScreenController extends GetxController {
     }
   }
 
+  void getUserId() async {
+    var uid = await storage.read(key: "userId");
+    userId(int.parse(uid!));
+  }
+
   @override
   void onInit() {
     super.onInit();
+    getUserId();
     searchTextFocus.requestFocus();
   }
 }

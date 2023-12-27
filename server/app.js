@@ -24,6 +24,7 @@ app.use('/image/users', express.static('E:/flutter/chatapp_image_folder/'));
 app.use('/api/users', require('./controllers/user_controller'));
 app.use('/api/messages', require('./controllers/message_controller'));
 app.use('/api/chats', require('./controllers/chat_controller'));
+app.use('/api/friends', require('./controllers/friend_controller'));
 
 // global error handler
 app.use(errorHandler);

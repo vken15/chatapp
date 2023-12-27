@@ -23,7 +23,7 @@ class ChatBoxController extends GetxController
   RxList<ReceivedMessage> messages = <ReceivedMessage>[].obs;
   RxList<ReceivedMessage> msgList = <ReceivedMessage>[].obs;
   int userId = Get.find<ChatController>().userId.value;
-  late UserInfo receiver;
+  Rx<UserInfo> receiver = UserInfo().obs;
   ScrollController scrollController = ScrollController();
   SocketMethods socketMethods = Get.find<ChatController>().socketMethods;
 
@@ -128,7 +128,7 @@ class ChatBoxController extends GetxController
 
   String lastOnlineCalc(String time) {
     List<int> onlineList = Get.find<ChatController>().online;
-    if (onlineList.contains(receiver.id)) {
+    if (onlineList.contains(receiver.value.id)) {
       return "Đang hoạt động";
     } else {
       DateTime now = DateTime.now();
@@ -156,11 +156,10 @@ class ChatBoxController extends GetxController
   void onInit() {
     super.onInit();
     Map<String, dynamic> args = Get.arguments;
-
     id.value = args['id'];
     title.value = args['title'];
     photo.value = args['photo'];
-    receiver = args['receiver'];
+    receiver.value = args['receiver'];
     getMessages();
     handleNext();
   }

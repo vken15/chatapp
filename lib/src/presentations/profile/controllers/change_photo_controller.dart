@@ -60,7 +60,6 @@ class ChangePhotoController extends GetxController {
     // xóa file ảnh cũ nếu tồn tại
     if (user.photo != null) {
       File(user.photo!).delete();
-      File(selectedImage.value!.path).delete();
     }
 
     // lưu file ảnh mới
@@ -83,7 +82,7 @@ class ChangePhotoController extends GetxController {
     } catch (e) {
       print(e);
     }
-
+    File(selectedImage.value!.path).delete();
     Get.offAndToNamed(AppRouter.homeScreen);
   }
 
