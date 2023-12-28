@@ -49,7 +49,7 @@ class ProfileAppBar extends SliverPersistentHeaderDelegate {
                       child: title!),
                 const Spacer(),
                 IconButton(
-                  icon: const Icon(Icons.more_vert),
+                  icon: const Icon(Icons.more_vert, color: Colors.white,),
                   onPressed: () {},
                 ),
               ],

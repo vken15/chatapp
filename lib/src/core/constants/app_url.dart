@@ -8,4 +8,5 @@ class AppEndpoint {
   static const USER_UPLOAD_PHOTO_API = "/api/users/upload";
   static const USER_PHOTO_API = "/image/users";
   static const USER_SEARCH_API = "/api/users/search";
+  static const FRIEND_API = "/api/friends";
 }

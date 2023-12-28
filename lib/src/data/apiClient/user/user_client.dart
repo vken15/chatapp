@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:chatapp/src/core/constants/app_url.dart';
 import 'package:chatapp/src/data/apiClient/base_client.dart';
+import 'package:chatapp/src/data/models/user/friend_request.dart';
 import 'package:chatapp/src/data/models/user/user_image.dart';
 import 'package:chatapp/src/data/models/user/user_info.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -33,7 +34,7 @@ class UserClient extends BaseClient {
   }
   //TODO: getFriendList
 
-  Future<List<UserInfo>> getUserByName({required String searchValue}) async {
+  Future<List<UserInfo>> getListUserByName({required String searchValue}) async {
     const storage = FlutterSecureStorage();
     var token = await storage.read(key: "UserToken");
     var url = "${AppEndpoint.APP_URL}${AppEndpoint.USER_SEARCH_API}";
@@ -55,5 +56,60 @@ class UserClient extends BaseClient {
     }
   }
 
-  //TODO: getFriendRequestStatus
+  Future<int> getFriendRequestStatus({required int id}) async {
+    const storage = FlutterSecureStorage();
+    var token = await storage.read(key: "UserToken");
+    var url = "${AppEndpoint.APP_URL}${AppEndpoint.FRIEND_API}/$id";
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    var response = await http.get(
+      Uri.parse(url),
+      headers: headers
+    );
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception("Lỗi ${response.statusCode}");
+    }
+  }
+
+  Future<List<FriendRequest>> getAllSendedFriendRequestStatus() async {
+    const storage = FlutterSecureStorage();
+    var token = await storage.read(key: "UserToken");
+    var url = "${AppEndpoint.APP_URL}${AppEndpoint.FRIEND_API}/sended";
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    var response = await http.get(
+      Uri.parse(url),
+      headers: headers
+    );
+    if (response.statusCode == 200) {
+      return List<FriendRequest>.from(json.decode(response.body).map((x) => FriendRequest.fromJson(x)));
+    } else {
+      throw Exception("Lỗi ${response.statusCode}");
+    }
+  }
+
+  Future<List<FriendRequest>> getAllReceivedFriendRequestStatus() async {
+    const storage = FlutterSecureStorage();
+    var token = await storage.read(key: "UserToken");
+    var url = "${AppEndpoint.APP_URL}${AppEndpoint.FRIEND_API}/received";
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    var response = await http.get(
+      Uri.parse(url),
+      headers: headers
+    );
+    if (response.statusCode == 200) {
+      return List<FriendRequest>.from(json.decode(response.body).map((x) => FriendRequest.fromJson(x)));
+    } else {
+      throw Exception("Lỗi ${response.statusCode}");
+    }
+  }
 }

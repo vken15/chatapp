@@ -26,12 +26,15 @@ async function initialize() {
     //db.User_Chat = require('../models/user_chat_model')(sequelize);
     db.Message.belongsTo(db.User, {as: 'sender', foreignKey: 'senderId'});
     db.Message.belongsTo(db.User, {as: 'receiver', foreignKey: 'receiverId', onDelete: "NO ACTION"});
+    
     db.User.belongsToMany(db.Chat, {through: 'User_Chat'});
     db.Chat.belongsToMany(db.User, {through: 'User_Chat'});
+    
     db.Message.belongsTo(db.Chat, {foreignKey: 'chatId'});
     db.Chat.hasMany(db.Message, {foreignKey: 'chatId'});
-    db.User.belongsToMany(db.User, {as: 'user', foreignKey: 'userId', through: db.Friend});
-    db.User.belongsToMany(db.User, {as: 'friend', foreignKey: 'friendId', through: db.Friend});
+    
+    db.User.belongsToMany(db.User, {as: 'friend', foreignKey: 'userId', through: db.Friend});
+    db.User.belongsToMany(db.User, {as: 'owner', foreignKey: 'friendId', through: db.Friend});
 
     // sync all models with database
     await sequelize.sync({ alter: true });

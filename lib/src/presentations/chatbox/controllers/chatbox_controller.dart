@@ -11,8 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class ChatBoxController extends GetxController
-    with GetSingleTickerProviderStateMixin {
+class ChatBoxController extends GetxController {
   Rx<TextEditingController> messageController = Rx(TextEditingController());
   Rx<AppState> screenState = AppState.initial.obs;
   RxInt id = (-1).obs;

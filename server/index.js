@@ -3,6 +3,7 @@ const app = require("./app");
 const _ = require("lodash");
 //const http = require("http");
 const userService = require('services/user_service');
+const friendService = require('services/friend_service');
 
 const port = process.env.PORT || 3000;
 
@@ -83,6 +84,22 @@ io.on('connection', (socket) => {
   //     console.log(e);
   //   }
   // });
+  socket.on('friend request', async (senderId, receiverId) => {
+    try {
+      const model = {
+        userId: senderId,
+        friendId: receiverId,
+        status: 1
+      }
+      await friendService.create(model);
+      let i = onlineUsers.indexOf(receiverId);
+      if (i != -1) {
+        socket.to(onlineUsers[i]).emit('update friend request', senderId);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  });
 
   socket.on('disconnect', () => {
     _.remove(users[userID], (u) => u === socket.id);

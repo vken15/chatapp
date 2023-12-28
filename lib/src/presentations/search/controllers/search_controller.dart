@@ -16,7 +16,7 @@ class SearchScreenController extends GetxController {
     if (searchContent.value.text == "") return;
     try {
       var client = UserClient();
-      var response = await client.getUserByName(searchValue: searchContent.value.text);
+      var response = await client.getListUserByName(searchValue: searchContent.value.text);
       result.assignAll(response);
       result.refresh();
       print(result.first.fullName);

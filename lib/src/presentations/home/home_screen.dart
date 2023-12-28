@@ -41,6 +41,7 @@ class AppTabBar extends GetWidget<HomeController> {
             },
           ),
         ],
+        titleSpacing: 18,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(

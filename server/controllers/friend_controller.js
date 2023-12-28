@@ -8,7 +8,9 @@ const friendService = require('services/friend_service');
 router.post('/add', authorize(), friendRequest);
 router.post('/accept', authorize(), acceptFriend);
 router.post('/reject', authorize(), rejectFriend);
-//router.get('/', authorize(), getAll);
+router.get('/sended', authorize(), getAllSFR);
+router.get('/received', authorize(), getAllRFR);
+router.get('/:id', authorize(), getStatusById);
 
 module.exports = router;
 
@@ -42,5 +44,23 @@ function rejectFriend(req, res, next) {
     }
     friendService.update(model)
         .then(() => res.json("Đã từ chối lời mời kết bạn"))
+        .catch(next);
+}
+
+function getStatusById(req, res, next) {
+    friendService.getById(req.auth.sub, req.params.id)
+        .then(status => res.json(status))
+        .catch(next);
+}
+
+function getAllSFR(req, res, next) {
+    friendService.getAllSFR(req.auth.sub)
+        .then(status => res.json(status))
+        .catch(next);
+}
+
+function getAllRFR(req, res, next) {
+    friendService.getAllRFR(req.auth.sub)
+        .then(status => res.json(status))
         .catch(next);
 }

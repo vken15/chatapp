@@ -12,6 +12,14 @@ class DarkModeSettingScreen extends StatelessWidget {
           "Chế độ tối",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                colors: [Color.fromARGB(255, 2, 96, 237), Colors.lightBlue]),
+          ),
+        ),
       ),
       body: Column(
         children: [

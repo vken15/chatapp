@@ -23,7 +23,7 @@ class OtherProfileScreen extends GetWidget<OtherProfileController> {
                   onPressed: () {
                     Get.back();
                   },
-                  icon: const Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
                 ),
                 expandedHeight: 250,
                 title: Row(
@@ -79,12 +79,26 @@ class OtherProfileScreen extends GetWidget<OtherProfileController> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      controller.addFriend();
-                    },
-                    child: const Text("Kết bạn"),
-                  ),
+                  controller.friendStatus.value == 0
+                      ? ElevatedButton(
+                          onPressed: () {
+                            controller.addFriend();
+                          },
+                          child: const Text("Kết bạn"),
+                        )
+                      : controller.friendStatus.value == 1
+                          ? ElevatedButton(
+                              onPressed: () {
+                                //controller.addFriend();
+                              },
+                              child: const Text("Thu hồi"),
+                            )
+                          : controller.friendStatus.value == 2 ? ElevatedButton(
+                              onPressed: () {
+                                //controller.addFriend();
+                              },
+                              child: const Text("Hủy kết bạn"),
+                            ) : const SizedBox(),
                   ElevatedButton(
                     onPressed: () {
                       controller.accessChat();

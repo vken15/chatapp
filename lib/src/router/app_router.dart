@@ -3,7 +3,9 @@ import 'package:chatapp/src/presentations/auth/bindings/auth_bindings.dart';
 import 'package:chatapp/src/presentations/auth/login_screen.dart';
 import 'package:chatapp/src/presentations/chatbox/bindings/chatbox_binding.dart';
 import 'package:chatapp/src/presentations/chatbox/chatbox_screen.dart';
+import 'package:chatapp/src/presentations/phonebook/bindings/friend_request_binding.dart';
 import 'package:chatapp/src/presentations/phonebook/bindings/phonebook_binding.dart';
+import 'package:chatapp/src/presentations/phonebook/friend_request_screen.dart';
 import 'package:chatapp/src/presentations/profile/bindings/change_photo_bindings.dart';
 import 'package:chatapp/src/presentations/profile/bindings/other_profile_binding.dart';
 import 'package:chatapp/src/presentations/profile/change_photo_screen.dart';
@@ -28,6 +30,7 @@ class AppRouter {
   static const homeScreen = "/home";
   static const searchScreen = "/search";
   //static const chatScreen = "/chat";
+  static const friendRequestScreen = "/friend-request";
   //static const profileScreen = "/profile";
   static const otherProfileScreen = "/other-profile";
   static const changePhotoScreen = "/profile-photo";
@@ -47,6 +50,9 @@ class AppRouter {
     GetPage(name: homeScreen, page: () => const AppTabBar(), bindings: [
       HomeBindings(),
       PhoneBookBindings(),
+    ]),
+    GetPage(name: friendRequestScreen, page: () => const FriendRequestScreen(), bindings: [
+      FriendRequestBindings()
     ]),
     GetPage(name: searchScreen, page: () => const SearchScreen(), bindings: [
       SearchBindings(),

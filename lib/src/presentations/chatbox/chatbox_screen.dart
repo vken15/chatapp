@@ -25,7 +25,7 @@ class ChatBoxScreen extends GetWidget<ChatBoxController> {
                         ? ""
                         : controller.lastOnlineCalc(
                             controller.receiver.value.lastOnline!),
-                    style: const TextStyle(fontSize: 15, color: Colors.grey))
+                    style: TextStyle(fontSize: 15, color: Colors.white.withOpacity(0.65)))
               ]),
         ),
         actions: [
@@ -36,6 +36,14 @@ class ChatBoxScreen extends GetWidget<ChatBoxController> {
           }, icon: const Icon(Icons.photo_size_select_small))
         ],
         //backgroundColor: Colors.blue,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                colors: [Color.fromARGB(255, 2, 96, 237), Colors.lightBlue]),
+          ),
+        ),
       ),
       body: Column(
         children: [

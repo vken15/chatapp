@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chatapp/src/core/constants/app_url.dart';
 import 'package:chatapp/src/presentations/phonebook/controllers/phonebook_controller.dart';
+import 'package:chatapp/src/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,7 +17,9 @@ class PhoneBookScreen extends GetWidget<PhoneBookController> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Get.toNamed(AppRouter.friendRequestScreen);
+              },
               child: const ListTile(
                 contentPadding: EdgeInsets.symmetric(horizontal: 16),
                 minLeadingWidth: 0,

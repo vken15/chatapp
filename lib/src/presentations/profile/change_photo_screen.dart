@@ -13,6 +13,14 @@ class ChangePhotoScreen extends GetWidget<ChangePhotoController> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Cập nhật ảnh đại diện"),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                colors: [Color.fromARGB(255, 2, 96, 237), Colors.lightBlue]),
+          ),
+        ),
       ),
       body: Obx(
         () => controller.selectedImage.value == null

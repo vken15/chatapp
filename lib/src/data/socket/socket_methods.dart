@@ -67,7 +67,9 @@ class SocketMethods {
     });
 
     //TODO:
-    _socketClient.on('accept friend', (data) {});
+    _socketClient.on('friend accepted', (data) {});
+    _socketClient.on('friend rejected', (data) {});
+    _socketClient.on('receive friend request', (data) {});
   }
 
   //emits
@@ -90,6 +92,18 @@ class SocketMethods {
   //TODO:
   void sendFriendRequest(int senderId, int receiverId) {
     _socketClient.emit('friend request', {senderId, receiverId});
+  }
+
+  void acceptFriend(int senderId, int receiverId) {
+    _socketClient.emit('accept friend', {senderId, receiverId});
+  }
+
+  void rejectFriend(int senderId, int receiverId) {
+    _socketClient.emit('reject friend', {senderId, receiverId});
+  }
+
+  void cancelFriend(int senderId, int receiverId) {
+    _socketClient.emit('cancel friend', {senderId, receiverId});
   }
 
   // void updateProfilePhoto(int id,Uint8List encodedImage) {
