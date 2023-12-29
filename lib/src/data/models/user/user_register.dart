@@ -3,7 +3,7 @@ class UserRegister {
   String? username;
   String? password;
 
-  UserRegister({this.username, this.password, required String fullName});
+  UserRegister({this.fullName, this.username, this.password});
 
   UserRegister.fromJson(Map<String, dynamic> json) {
     fullName = json['fullName'];
@@ -13,7 +13,7 @@ class UserRegister {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['fullname'] = fullName;
+    data['fullName'] = fullName;
     data['username'] = username;
     data['password'] = password;
     return data;

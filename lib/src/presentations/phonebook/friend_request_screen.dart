@@ -105,12 +105,12 @@ class FriendRequestScreen extends GetWidget<FriendRequestController> {
                 trailing: sender
                     ? ElevatedButton(
                         onPressed: () {
-                          //controller.cancelFriend();
+                          controller.cancelFriend(list[index].id!);
                         },
                         child: const Text("Thu hồi"))
                     : ElevatedButton(
                         onPressed: () {
-                          //controller.acceptFriend();
+                          controller.acceptFriend(list[index].id!);
                         },
                         child: const Text("Đồng ý")),
               ),

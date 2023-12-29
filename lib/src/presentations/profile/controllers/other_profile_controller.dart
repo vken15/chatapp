@@ -15,8 +15,11 @@ class OtherProfileController extends GetxController {
   SocketMethods socketMethods = Get.find<ChatController>().socketMethods;
 
   addFriend() async {
-    var uid = await storage.read(key: "userId");
-    socketMethods.sendFriendRequest(int.parse(uid!), user.value.id!);
+    socketMethods.friendRequest(user.value.id!, 1);
+  }
+
+  cancelFriend() async {
+    socketMethods.friendRequest(user.value.id!, -2);
   }
 
   accessChat() async {
@@ -24,11 +27,16 @@ class OtherProfileController extends GetxController {
       var client = ChatClient();
       var createChat = CreateChat(userId: user.value.id!);
       var response = await client.accessChat(createChat);
+      if (Get.isRegistered<ChatController>()) {
+        Get.find<ChatController>().getChats();
+      }
       Get.toNamed(AppRouter.chatboxScreen, arguments: {
-          'title': response.chatName!.isEmpty ? user.value.fullName : response.chatName,
-          'id': response.id,
-          'photo': "",
-          'receiver': user.value,
+        'title': response.chatName!.isEmpty
+            ? user.value.fullName
+            : response.chatName,
+        'id': response.id,
+        'photo': "",
+        'receiver': response.users?.firstWhere((u) => u.id == user.value.id),
       });
     } catch (e) {
       print(e);

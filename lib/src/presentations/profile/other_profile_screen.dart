@@ -89,13 +89,13 @@ class OtherProfileScreen extends GetWidget<OtherProfileController> {
                       : controller.friendStatus.value == 1
                           ? ElevatedButton(
                               onPressed: () {
-                                //controller.addFriend();
+                                controller.cancelFriend();
                               },
                               child: const Text("Thu hồi"),
                             )
                           : controller.friendStatus.value == 2 ? ElevatedButton(
                               onPressed: () {
-                                //controller.addFriend();
+                                controller.cancelFriend();
                               },
                               child: const Text("Hủy kết bạn"),
                             ) : const SizedBox(),

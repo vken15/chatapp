@@ -1,6 +1,8 @@
 import 'package:chatapp/src/core/enum/app_state.dart';
 import 'package:chatapp/src/data/apiClient/user/user_client.dart';
 import 'package:chatapp/src/data/models/user/friend_request.dart';
+import 'package:chatapp/src/data/socket/socket_methods.dart';
+import 'package:chatapp/src/presentations/chat/controllers/chat_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,6 +13,19 @@ class FriendRequestController extends GetxController
   Rx<AppState> sendedState = AppState.initial.obs;
   Rx<AppState> receivedState = AppState.initial.obs;
   late TabController tabController;
+  SocketMethods socketMethods = Get.find<ChatController>().socketMethods;
+
+  acceptFriend(int id) async {
+    socketMethods.friendRequest(id, 2);
+  }
+
+  rejectFriend(int id) async {
+    socketMethods.friendRequest(id, -1);
+  }
+
+  cancelFriend(int id) async {
+    socketMethods.friendRequest(id, -2);
+  }
 
   getSFR() async {
     try {
@@ -18,7 +33,13 @@ class FriendRequestController extends GetxController
       var client = UserClient();
       var response = await client.getAllSendedFriendRequestStatus();
       sendedState(AppState.loaded);
-      sended(response);
+      var list = <FriendRequest>[];
+      for (var e in response) {
+        if (e.status != 2) {
+          list.add(e);
+        }
+      }
+      sended(list);
     } catch (e) {
       sendedState(AppState.error);
     }
@@ -28,7 +49,13 @@ class FriendRequestController extends GetxController
     try {
       var client = UserClient();
       var response = await client.getAllReceivedFriendRequestStatus();
-      received(response);
+      var list = <FriendRequest>[];
+      for (var e in response) {
+        if (e.status != 2) {
+          list.add(e);
+        }
+      }
+      received(list);
     } catch (e) {
       sendedState(AppState.error);
     }

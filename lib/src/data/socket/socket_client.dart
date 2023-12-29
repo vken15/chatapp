@@ -8,13 +8,10 @@ class SocketClient {
     socket = io.io(AppEndpoint.APP_URL, <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false,
-      // 'extraHeaders': {HttpHeaders.authorizationHeader: accessToken}
     });
   }
 
   static SocketClient get instance {
-    // const storage = FlutterSecureStorage();
-    // var token = await storage.read(key: "UserToken");
     _instance ??= SocketClient._internal();
     return _instance!;
   }

@@ -7,12 +7,12 @@ module.exports = {
 };
 
 async function create(params) {
-    var chat = await db.Chat.create(params, { include: db.User });
-    params.users.forEach(async element => {
-        const user = await db.User.findByPk(element.id);
-        chat.addUser(user);
-    });
-    return chat;
+    var chat = await db.Chat.create(params);
+    const user = await db.User.findByPk(params.Users[0].id);
+    await chat.addUser(user);
+    const user2 = await db.User.findByPk(params.Users[1].id);
+    await chat.addUser(user2);
+    return await db.Chat.findByPk(chat.id, {include: db.User});
 }
 
 async function getByUserId(userId) {

@@ -5,7 +5,6 @@ const Joi = require('joi');
 const validateRequest = require('_middleware/validate-request');
 const authorize = require('_middleware/authorize');
 const chatService = require('services/chat_service');
-const userService = require('services/user_service');
 
 // routes
 router.post('/', authorize(), accessChatSchema, accessChat);
@@ -30,7 +29,7 @@ function accessChat(req, res, next) {
             var Chat = {
                 chatName: "",
                 isGroupChat: false,
-                users: [
+                Users: [
                     {
                         id: parseInt(req.body.userId),
                     },
@@ -39,11 +38,9 @@ function accessChat(req, res, next) {
                     }
                 ]
             };
-            chatService.create(Chat)
-                .then((chat) => res.json(chat))
-                .catch(() => res.status(500).json({ error: 'Không tạo được' }));
+            chatService.create(Chat).then((chat) => res.json(chat)).catch(next);
         }
-    });
+    }).catch(next);
 }
 
 function getChat(req, res, next) {

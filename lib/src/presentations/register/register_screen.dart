@@ -12,6 +12,7 @@ class RegisterScreen extends GetWidget<RegisterController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: context.isDarkMode ? Colors.white : Colors.black,
         title: const Text("ĐĂNG KÝ"),
       ),
       body: Obx(

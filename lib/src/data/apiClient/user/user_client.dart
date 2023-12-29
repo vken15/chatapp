@@ -32,7 +32,25 @@ class UserClient extends BaseClient {
       throw Exception("Lỗi ${response.statusCode}");
     }
   }
-  //TODO: getFriendList
+
+  Future<List<UserInfo>> getFriendList() async {
+    const storage = FlutterSecureStorage();
+    var token = await storage.read(key: "UserToken");
+    var url = "${AppEndpoint.APP_URL}${AppEndpoint.FRIEND_API}/";
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    var response = await http.get(
+      Uri.parse(url),
+      headers: headers,
+    );
+    if (response.statusCode == 200) {
+      return List<UserInfo>.from(json.decode(response.body).map((x) => UserInfo.fromJson(x)));
+    } else {
+      throw Exception("Lỗi ${response.statusCode}");
+    }
+  }
 
   Future<List<UserInfo>> getListUserByName({required String searchValue}) async {
     const storage = FlutterSecureStorage();
@@ -108,6 +126,29 @@ class UserClient extends BaseClient {
     );
     if (response.statusCode == 200) {
       return List<FriendRequest>.from(json.decode(response.body).map((x) => FriendRequest.fromJson(x)));
+    } else {
+      throw Exception("Lỗi ${response.statusCode}");
+    }
+  }
+
+  Future<String> storeToken(
+      {required String fCMToken}) async {
+    const storage = FlutterSecureStorage();
+    var token = await storage.read(key: "UserToken");
+    var url = "${AppEndpoint.APP_URL}/api/notify/store";
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    Map<String, dynamic> body = <String, dynamic>{};
+    body["token"] = fCMToken;
+    var response = await http.post(
+      Uri.parse(url),
+      headers: headers,
+      body: jsonEncode(body),
+    );
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
     } else {
       throw Exception("Lỗi ${response.statusCode}");
     }

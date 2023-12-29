@@ -29,7 +29,6 @@ class ChatBoxController extends GetxController {
   void sendMessage(String content, int chatId, int receiverId, int senderId) {
     if (content.isNotEmpty) {
       SendMessage model = SendMessage(
-          senderId: senderId,
           content: content,
           receiverId: receiverId,
           chatId: chatId);
@@ -46,6 +45,7 @@ class ChatBoxController extends GetxController {
           }
         });
         Get.find<ChatController>().chatList.refresh();
+        client.sendNotify(model);
       }).catchError((e) {
         ShowSnackBar.showSnackBar("Không thể gửi tin nhắn");
       });

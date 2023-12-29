@@ -34,22 +34,25 @@ class RegisterController extends GetxController {
         ShowSnackBar.showSnackBar("Mật khẩu nhập lại không đúng");
       } else {
         status(LoginStatus.loading);
-        var client = RegisterClient();
         try {
+          var client = RegisterClient();
+          print("client");
           var response = await client.register(
               fullName: fullNameController.value.text,
               username: usernameController.value.text,
               password: passwordController.value.text);
           //messages(response.message);
+          print("response");
           if (response.success!) {
             status(LoginStatus.success);
-            Get.toNamed(AppRouter.loginScreen);
+            Get.offAndToNamed(AppRouter.loginScreen);
           } else {
             status(LoginStatus.faild);
             ShowSnackBar.showSnackBar(response.message);
           }
         } catch (e) {
           status(LoginStatus.faild);
+          //throw Exception(e.toString());
           ShowSnackBar.showSnackBar(e.toString());
           //rethrow;
         }

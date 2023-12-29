@@ -54,4 +54,25 @@ class MessageClient extends BaseClient {
       throw Exception("Failded to load messages");
     }
   }
+
+  Future<bool> sendNotify(SendMessage model) async {
+    const storage = FlutterSecureStorage();
+    var token = await storage.read(key: "UserToken");
+    var url = "${AppEndpoint.APP_URL}/api/notify/send";
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    var response = await http.post(
+      Uri.parse(url),
+      headers: headers,
+      body: jsonEncode(model.toJson())
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

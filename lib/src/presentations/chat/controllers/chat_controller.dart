@@ -18,7 +18,7 @@ class ChatController extends GetxController
   RxInt userId = (-1).obs;
   RxList<int> online = <int>[].obs;
   RxBool typing = false.obs;
-  Timer? timer;
+  //Timer? timer;
 
   Future<void> getUserId() async {
     var uid = await storage.read(key: "userId");
@@ -34,6 +34,18 @@ class ChatController extends GetxController
     screenState(AppState.loading);
     var data = await chatDao.getAll();
     if (data.isNotEmpty) {
+      data.sort((a, b) {
+        if (a.latestMessage != null && b.latestMessage != null) {
+          return b.latestMessage!.updatedAt!
+              .compareTo(a.latestMessage!.updatedAt!);
+        } else if (b.latestMessage == null && a.latestMessage != null) {
+          return b.updatedAt!.compareTo(a.latestMessage!.updatedAt!);
+        } else if (b.latestMessage != null && a.latestMessage == null) {
+          return b.latestMessage!.updatedAt!.compareTo(a.updatedAt!);
+        } else {
+          return b.updatedAt!.compareTo(a.updatedAt!);
+        }
+      });
       chatList.assignAll(data);
       screenState(AppState.loaded);
     }
@@ -44,6 +56,18 @@ class ChatController extends GetxController
         screenState(AppState.empty);
       } else {
         screenState(AppState.loaded);
+        response.sort((a, b) {
+          if (a.latestMessage != null && b.latestMessage != null) {
+            return b.latestMessage!.updatedAt!
+                .compareTo(a.latestMessage!.updatedAt!);
+          } else if (b.latestMessage == null && a.latestMessage != null) {
+            return b.updatedAt!.compareTo(a.latestMessage!.updatedAt!);
+          } else if (b.latestMessage != null && a.latestMessage == null) {
+            return b.latestMessage!.updatedAt!.compareTo(a.updatedAt!);
+          } else {
+            return b.updatedAt!.compareTo(a.updatedAt!);
+          }
+        });
         chatList.assignAll(response);
         List<int> chatIdList = [];
         for (var chat in chatList) {
@@ -90,7 +114,7 @@ class ChatController extends GetxController
   @override
   void onClose() {
     super.onClose();
-    timer?.cancel();
+    //timer?.cancel();
     _socketMethod.socketClient.dispose();
   }
 }

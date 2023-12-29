@@ -1,7 +1,12 @@
 import 'package:chatapp/src/data/models/message/received_message.dart';
+import 'package:chatapp/src/data/models/user/friend_request.dart';
 import 'package:chatapp/src/data/socket/socket_client.dart';
 import 'package:chatapp/src/presentations/chatbox/controllers/chatbox_controller.dart';
 import 'package:chatapp/src/presentations/chat/controllers/chat_controller.dart';
+import 'package:chatapp/src/presentations/phonebook/controllers/friend_request_controller.dart';
+import 'package:chatapp/src/presentations/phonebook/controllers/phonebook_controller.dart';
+import 'package:chatapp/src/presentations/profile/controllers/other_profile_controller.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -10,17 +15,25 @@ class SocketMethods {
 
   Socket get socketClient => _socketClient;
 
-  void initClient(int userId) {
+  Future<void> initClient(int userId) async {
+    const storage = FlutterSecureStorage();
+    var token = await storage.read(key: "UserToken");
     _socketClient = SocketClient.instance.socket!;
     _socketClient.connect();
-    _socketClient.emit("setup", userId);
+    _socketClient.emit('authenticate', token);
     _socketClient.onConnect((_) {
       print("Connected!");
     });
 
     _socketClient.on('online-user-list', (users) {
-      Get.find<ChatController>().online.addAll(users.cast<int>());
-      Get.find<ChatController>().chatList.refresh();
+      if (Get.isRegistered<ChatController>() == true) {
+        Get.find<ChatController>().online.addAll(users.cast<int>());
+        Get.find<ChatController>().chatList.refresh();
+      }
+      if (Get.isRegistered<PhoneBookController>() == true) {
+        Get.find<PhoneBookController>().online.addAll(users.cast<int>());
+        Get.find<PhoneBookController>().getOnlineFriend();
+      }
     });
 
     _socketClient.on('online-user', (userId) {
@@ -66,10 +79,27 @@ class SocketMethods {
       }
     });
 
-    //TODO:
-    _socketClient.on('friend accepted', (data) {});
-    _socketClient.on('friend rejected', (data) {});
-    _socketClient.on('receive friend request', (data) {});
+    /// status:
+    /// {-2: cancel/delete}
+    /// {-1: reject}
+    /// {0: default}
+    /// {1: create}
+    /// {2: accept}
+    _socketClient.on('update friend request', (data) {
+      var response = FriendRequest.fromJson2(data);
+      if (response.status == -2) {
+        response.status = 0;
+      }
+      if (Get.isRegistered<FriendRequestController>() == true) {
+        Get.find<FriendRequestController>().getRFR();
+        Get.find<FriendRequestController>().getSFR();
+      }
+      if (Get.isRegistered<OtherProfileController>() == true) {
+        if (Get.find<OtherProfileController>().user.value.id == response.id) {
+          Get.find<OtherProfileController>().friendStatus(response.status);
+        }
+      }
+    });
   }
 
   //emits
@@ -89,21 +119,15 @@ class SocketMethods {
     _socketClient.emit('join chat', listId);
   }
 
-  //TODO:
-  void sendFriendRequest(int senderId, int receiverId) {
-    _socketClient.emit('friend request', {senderId, receiverId});
-  }
-
-  void acceptFriend(int senderId, int receiverId) {
-    _socketClient.emit('accept friend', {senderId, receiverId});
-  }
-
-  void rejectFriend(int senderId, int receiverId) {
-    _socketClient.emit('reject friend', {senderId, receiverId});
-  }
-
-  void cancelFriend(int senderId, int receiverId) {
-    _socketClient.emit('cancel friend', {senderId, receiverId});
+  /// status:
+  /// {-2: cancel/delete}
+  /// {-1: reject}
+  /// {0: default}
+  /// {1: create}
+  /// {2: accept}
+  void friendRequest(int receiverId, int status) {
+    _socketClient
+        .emit('friend request', {'receiverId': receiverId, 'status': status});
   }
 
   // void updateProfilePhoto(int id,Uint8List encodedImage) {

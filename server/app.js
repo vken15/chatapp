@@ -25,6 +25,7 @@ app.use('/api/users', require('./controllers/user_controller'));
 app.use('/api/messages', require('./controllers/message_controller'));
 app.use('/api/chats', require('./controllers/chat_controller'));
 app.use('/api/friends', require('./controllers/friend_controller'));
+app.use('/api/notify', require('./controllers/push_notification_controller'));
 
 // global error handler
 app.use(errorHandler);

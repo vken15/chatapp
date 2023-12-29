@@ -13,6 +13,7 @@ class AppTabBar extends GetWidget<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: GestureDetector(
             onTap: () {
               Get.toNamed(AppRouter.searchScreen);

@@ -14,7 +14,6 @@ module.exports = router;
 
 function messageSchema(req, res, next) {
     const schema = Joi.object({
-        senderId: Joi.number().integer().required(),
         content: Joi.string().required(),
         receiverId: Joi.number().integer().required(),
         chatId: Joi.number().integer().required()
@@ -29,7 +28,13 @@ function getAllMessage(req, res, next) {
 }
 
 function sendMessage(req, res, next) {
-    messageService.create(req.body)
+    const model = {
+        senderId: req.auth.sub,
+        content: req.body.content,
+        receiverId: req.body.receiverId,
+        chatId: req.body.chatId
+    }
+    messageService.create(model)
         .then((message) => {
             res.json(message);
             //res.json({ message: 'Đã gửi' });
