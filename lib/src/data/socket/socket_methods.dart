@@ -63,7 +63,7 @@ class SocketMethods {
     _socketClient.on('message received', (newMessageReceived) {
       ReceivedMessage receivedMessage =
           ReceivedMessage.fromJson(newMessageReceived);
-      sendStopTypingEvent(receivedMessage.chatId!);
+      //sendStopTypingEvent(receivedMessage.chatId!);
       if (receivedMessage.senderId != userId) {
         Get.find<ChatController>().chatList.forEach((chat) {
           if (chat.id == receivedMessage.chatId) {
@@ -107,13 +107,13 @@ class SocketMethods {
     _socketClient.emit('new message', emmission);
   }
 
-  void sendTypingEvent(int id) {
-    _socketClient.emit('typing', id);
-  }
+  // void sendTypingEvent(int id) {
+  //   _socketClient.emit('typing', id);
+  // }
 
-  void sendStopTypingEvent(int id) {
-    _socketClient.emit('stop typing', id);
-  }
+  // void sendStopTypingEvent(int id) {
+  //   _socketClient.emit('stop typing', id);
+  // }
 
   void joinChat(List<int> listId) {
     _socketClient.emit('join chat', listId);

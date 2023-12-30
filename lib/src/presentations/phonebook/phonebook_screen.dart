@@ -51,17 +51,23 @@ class PhoneBookScreen extends GetWidget<PhoneBookController> {
                 padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
                 child: Row(
                   children: [
-                    ElevatedButton(
-                        onPressed: () {
-                          controller.show(false);
-                        },
-                        child: Text("Tất cả ${controller.friendList.length}")),
-                    ElevatedButton(
-                        onPressed: () {
-                          controller.show(true);
-                        },
-                        child: Text(
-                            "Mới truy cập ${controller.onlinefriendList.length}")),
+                    _buildButtonCustom(
+                      context,
+                      "Tất cả ${controller.friendList.length}",
+                      () {
+                        controller.show(false);
+                      },
+                      !controller.show.value,
+                    ),
+                    const SizedBox(width: 12),
+                    _buildButtonCustom(
+                      context,
+                      "Mới truy cập ${controller.onlinefriendList.length}",
+                      () {
+                        controller.show(true);
+                      },
+                      controller.show.value,
+                    ),
                   ],
                 ),
               ),
@@ -78,6 +84,16 @@ class PhoneBookScreen extends GetWidget<PhoneBookController> {
         ),
       ),
     );
+  }
+
+  OutlinedButton _buildButtonCustom(BuildContext context, String text, Function()? onPressed, bool select) {
+    return OutlinedButton(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: context.isDarkMode ? Colors.white : Colors.black,
+          backgroundColor: select == true ? const Color.fromARGB(95, 109, 104, 104) : null,
+        ),
+        onPressed: onPressed,
+        child: Text(text));
   }
 
   ListView _buildListFriend(List<UserInfo> list) {

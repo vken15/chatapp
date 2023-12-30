@@ -14,11 +14,12 @@ class ChangePhotoScreen extends GetWidget<ChangePhotoController> {
       appBar: AppBar(
         title: const Text("Cập nhật ảnh đại diện"),
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
-                colors: [Color.fromARGB(255, 2, 96, 237), Colors.lightBlue]),
+                colors: context.isDarkMode ? [const Color.fromARGB(96, 43, 42, 42), const Color.fromARGB(96, 43, 42, 42)] : 
+                [const Color.fromARGB(255, 2, 96, 237), Colors.lightBlue]),
           ),
         ),
       ),

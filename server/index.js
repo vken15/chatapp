@@ -113,7 +113,13 @@ io.on('connection', (socket) => {
       }
       console.log(model);
       if (status == 1) { //create friend request
-        await friendService.create(model);
+        const friendRequest = await friendService.getById(receiverId, userID);
+        if (friendRequest == 1) {
+          await friendService.acceptFriend(model);
+        }
+        else {
+          await friendService.create(model);
+        }
       } else if (status == -1) { //reject friend request
         const model2 = {
           userId: receiverId,

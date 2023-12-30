@@ -44,11 +44,12 @@ class AppTabBar extends GetWidget<HomeController> {
         ],
         titleSpacing: 18,
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
-                colors: [Color.fromARGB(255, 2, 96, 237), Colors.lightBlue]),
+                colors: context.isDarkMode ? [const Color.fromARGB(96, 43, 42, 42), const Color.fromARGB(96, 43, 42, 42)] : 
+                [const Color.fromARGB(255, 2, 96, 237), Colors.lightBlue]),
           ),
         ),
       ),
@@ -60,10 +61,13 @@ class AppTabBar extends GetWidget<HomeController> {
           ProfileScreen(),
         ],
       ),
-      bottomNavigationBar: TabBar(
-        controller: controller.tabController,
-        tabs: controller.tabs,
-        indicatorColor: Colors.white,
+      bottomNavigationBar: ColoredBox(
+        color: context.isDarkMode ? const Color.fromARGB(95, 109, 104, 104) : Colors.white.withOpacity(0.5),
+        child: TabBar(
+          controller: controller.tabController,
+          tabs: controller.tabs,
+          indicatorColor: Colors.white,
+        ),
       ),
     );
   }

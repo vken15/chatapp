@@ -17,7 +17,6 @@ class ChatBoxController extends GetxController {
   RxInt id = (-1).obs;
   RxString title = "".obs;
   RxString photo = "".obs;
-  //RxList<int> users = <int>[].obs;
   RxInt offset = 1.obs;
   RxList<ReceivedMessage> messages = <ReceivedMessage>[].obs;
   RxList<ReceivedMessage> msgList = <ReceivedMessage>[].obs;
@@ -26,17 +25,52 @@ class ChatBoxController extends GetxController {
   ScrollController scrollController = ScrollController();
   SocketMethods socketMethods = Get.find<ChatController>().socketMethods;
 
+  String msgTime(String time) {
+    DateTime messageTime = DateTime.parse(time).toLocal();
+    return DateFormat.Hm().format(messageTime);
+  }
+
+  String msgDateTime(String time) {
+    DateTime now = DateTime.now();
+    DateTime messageTime = DateTime.parse(time).toLocal();
+    if (now.year == messageTime.year &&
+        now.month == messageTime.month &&
+        now.day == messageTime.day) {
+      return "${DateFormat.Hm().format(messageTime)} Hôm nay";
+    } else if (now.year == messageTime.year &&
+        now.month == messageTime.month &&
+        now.day - messageTime.day == 1) {
+      return "${DateFormat.Hm().format(messageTime)} Hôm qua";
+    } else {
+      return "${DateFormat.Hm().format(messageTime)} ${DateFormat.yMd().format(messageTime)}";
+    }
+  }
+
+  bool changeDate(int index) {
+    if (index + 1 < messages.length) {
+      DateTime messageTime = DateTime.parse(messages[index].updatedAt.toString()).toLocal();
+      DateTime messageTime2 = DateTime.parse(messages[index+1].updatedAt.toString()).toLocal();
+      if (messageTime2.year != messageTime.year ||
+          messageTime2.month != messageTime.month ||
+          messageTime2.day != messageTime.day) {
+        return true;
+      }
+    }
+    if (index + 1 == messages.length) {
+        return true;
+    }
+    return false;
+  }
+
   void sendMessage(String content, int chatId, int receiverId, int senderId) {
     if (content.isNotEmpty) {
-      SendMessage model = SendMessage(
-          content: content,
-          receiverId: receiverId,
-          chatId: chatId);
+      SendMessage model =
+          SendMessage(content: content, receiverId: receiverId, chatId: chatId);
       var client = MessageClient();
       client.sendMessage(model).then((response) {
         var emmission = response[2];
         socketMethods.newMessageEvent(emmission);
-        socketMethods.sendStopTypingEvent(id.value);
+        //socketMethods.sendStopTypingEvent(id.value);
         messageController.value.clear();
         messages.insert(0, response[1]);
         Get.find<ChatController>().chatList.forEach((chat) {
@@ -117,13 +151,13 @@ class ChatBoxController extends GetxController {
     });
   }
 
-  void startTyping() {
-    socketMethods.sendTypingEvent(id.value);
-  }
+  // void startTyping() {
+  //   socketMethods.sendTypingEvent(id.value);
+  // }
 
-  void stopTyping() {
-    socketMethods.sendStopTypingEvent(id.value);
-  }
+  // void stopTyping() {
+  //   socketMethods.sendStopTypingEvent(id.value);
+  // }
 
   String lastOnlineCalc(String time) {
     List<int> onlineList = Get.find<ChatController>().online;

@@ -3,7 +3,7 @@
     <application
         android:label="Chat App"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/chat_icon"
         android:enableOnBackInvokedCallback="true">
         <activity
             android:name=".MainActivity"

@@ -47,7 +47,7 @@ class FireBaseApi extends GetxService {
   }
 
   Future initLocalNotifications() async {
-    const android = AndroidInitializationSettings('@drawable/ic_launcher');
+    const android = AndroidInitializationSettings('@drawable/chat_icon');
     const settings = InitializationSettings(android: android);
 
     await _localNotifications.initialize(settings,
@@ -85,7 +85,7 @@ class FireBaseApi extends GetxService {
             _androidChannel.id,
             _androidChannel.name,
             channelDescription: _androidChannel.description,
-            icon: '@drawable/ic_launcher',
+            icon: '@drawable/chat_icon',
           ),
         ),
         payload: jsonEncode(message.toMap()),

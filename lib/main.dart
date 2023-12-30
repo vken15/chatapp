@@ -30,9 +30,25 @@ class MainApp extends StatelessWidget {
             fontWeight: FontWeight.w500
           ),
           titleSpacing: 0,
+        ),
+        tabBarTheme: const TabBarTheme(
+          labelColor: Colors.blue, 
         )
       ),
-      darkTheme: ThemeData.dark(),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        appBarTheme: const AppBarTheme(
+          foregroundColor: Colors.white,
+          titleTextStyle: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w500
+          ),
+          titleSpacing: 0,
+        ),
+        tabBarTheme: const TabBarTheme(
+          labelColor: Colors.white, 
+        )
+      ),
       initialBinding: InitialBindings(),
       initialRoute: AppRouter.splashScreen,
       getPages: AppRouter.pages,

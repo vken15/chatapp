@@ -13,11 +13,12 @@ class DarkModeSettingScreen extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
-                colors: [Color.fromARGB(255, 2, 96, 237), Colors.lightBlue]),
+                colors: context.isDarkMode ? [const Color.fromARGB(96, 43, 42, 42), const Color.fromARGB(96, 43, 42, 42)] : 
+                [const Color.fromARGB(255, 2, 96, 237), Colors.lightBlue]),
           ),
         ),
       ),

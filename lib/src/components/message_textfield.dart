@@ -21,7 +21,7 @@ class MessageTextField extends StatelessWidget {
         isDense: true,
         filled: true,
         prefixIcon: IconButton(onPressed: () {}, icon: const Icon(Icons.face)),
-        hintText: "Type your message here",
+        hintText: "Tin nhắn",
         hintStyle: const TextStyle(),
         suffixIcon: suffixIcon,
       ),

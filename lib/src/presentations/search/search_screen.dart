@@ -41,11 +41,12 @@ class SearchScreen extends GetWidget<SearchScreenController> {
         ),
         titleSpacing: 0,
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
-                colors: [Color.fromARGB(255, 2, 96, 237), Colors.lightBlue]),
+                colors: context.isDarkMode ? [const Color.fromARGB(96, 43, 42, 42), const Color.fromARGB(96, 43, 42, 42)] : 
+                [const Color.fromARGB(255, 2, 96, 237), Colors.lightBlue]),
           ),
         ),
       ),
@@ -69,7 +70,7 @@ class SearchScreen extends GetWidget<SearchScreenController> {
                 leading: CircleAvatar(
                   radius: 20,
                   backgroundImage: controller.result[index].photo == null
-                      ? null
+                      ? const AssetImage("assets/images/blank-profile.png")
                       : controller.result[index].photoStored == true
                           ? FileImage(File(controller.result[index].photo!))
                               as ImageProvider<Object>

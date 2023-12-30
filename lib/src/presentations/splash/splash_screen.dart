@@ -7,6 +7,26 @@ class SplashScreen extends GetWidget<SplashController> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 100,
+            child: Image.asset("assets/icons/chat_icon.png")),
+          const Center(
+            child: Text(
+              "CHAT APP",
+              style: TextStyle(fontSize: 24),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 120),
+            child: const CircularProgressIndicator(
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
